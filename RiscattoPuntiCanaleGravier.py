@@ -103,9 +103,9 @@ def compileForm(name,objects):
     id_richiesta = objects.getFormIdRichiesta()
     
     ### This is for Testing
-#    linkModulo = "https://docs.google.com/forms/d/e/1FAIpQLSdIh7YJVqFpbs-X0AWkAukWRbKn4z-zYlLBPt1EbApVGdShig/viewform"
-#    id_nome = 'entry.1911042707'
-#    id_richiesta = 'entry.1222566434'
+    linkModulo = "https://docs.google.com/forms/d/e/1FAIpQLSdIh7YJVqFpbs-X0AWkAukWRbKn4z-zYlLBPt1EbApVGdShig/viewform"
+    id_nome = 'entry.1911042707'
+    id_richiesta = 'entry.1222566434'
 
     richieste = objects.getRequests( filtered=False )
     for i in range(0,len(richieste)):
