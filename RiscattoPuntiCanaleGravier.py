@@ -49,7 +49,7 @@ class Richieste:
     def getRequests(self,filtered=True):
         if not filtered:
             return self.richieste
-        return [x for x in self.richieste if not x['Inserita'] ]
+        return [x for x in self.richieste if x['Inserita'] == "Y" ]
 
     
 def retrieveValues():
