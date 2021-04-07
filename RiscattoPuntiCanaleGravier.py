@@ -46,7 +46,7 @@ class Richieste:
             el = results[i]
             self.addRequest( el[0],el[1],el[2],el[7] )
 
-    def getRequests(self,filtered=True):
+    def getRequests(self,filtered):
         if not filtered:
             return self.richieste
         return [x for x in self.richieste if x['Inserita'] == "Y" ]
@@ -95,18 +95,18 @@ def compileForm(name,objects):
     import requests
     import time
 
-    print( "   \\__ Compilazione moduli per " + name )
-    print( "      \\__ Modulo: " + objects.modulo )
+    print( "   \\__ Compiling Modules for " + name )
+    print( "      \\__ Module: " + objects.modulo )
 
     linkModulo = objects.modulo
     id_nome = objects.getFormIdName()
     id_richiesta = objects.getFormIdRichiesta()
-
+    
     ### TMP
     linkModulo = "https://docs.google.com/forms/d/e/1FAIpQLSdIh7YJVqFpbs-X0AWkAukWRbKn4z-zYlLBPt1EbApVGdShig/viewform"
     id_nome = 'entry.1911042707'
     id_richiesta = 'entry.1222566434'
-    
+
     richieste = objects.getRequests( filtered=False )
     for i in range(0,len(richieste)):
         el = richieste[i]
