@@ -4,9 +4,17 @@ class Richieste:
     def __init__(self,name,results):
         self.name = name
         self.modulo = self.getLinkModulo( results )
+        self.idForm = []
         self.richieste = []
         self.processSheet( results )
-        
+
+        if self.name == "DISEGNI":
+            self.idForm = ['entry.1943497073','entry.1374345851']
+        elif self.name == "CANZONI":
+            self.idForm = ['entry.1400530917','entry.1530943645']
+        else:
+            raise Exception("Non è possibile determinare i form ID per le richieste " + name )
+            
     def __str__(self):
         output = "Link Modulo: " + self.modulo + "\n"
         output += "Elenco delle richieste : "  + self.name + "\n" 
@@ -15,6 +23,12 @@ class Richieste:
             output += text + "\n"
         return output
 
+    def getFormIdName(self):
+        return self.idForm[0]
+
+    def getFormIdRichiesta(self):
+        return self.idForm[1]
+    
     def getLinkModulo(self,objects):
         import re
         return re.findall("(http.*)",objects[0][0])[0].strip()
@@ -84,8 +98,15 @@ def compileForm(name,objects):
     print( "   \\__ Compilazione moduli per " + name )
     print( "      \\__ Modulo: " + objects.modulo )
 
-    moduloDiProva = "https://docs.google.com/forms/d/e/1FAIpQLSdIh7YJVqFpbs-X0AWkAukWRbKn4z-zYlLBPt1EbApVGdShig/viewform"
+    linkModulo = objects.modulo
+    id_nome = objects.getFormIdName()
+    id_richiesta = objects.getFormIdRichiesta()
 
+    ### TMP
+    linkModulo = "https://docs.google.com/forms/d/e/1FAIpQLSdIh7YJVqFpbs-X0AWkAukWRbKn4z-zYlLBPt1EbApVGdShig/viewform"
+    id_nome = 'entry.1911042707'
+    id_richiesta = 'entry.1222566434'
+    
     richieste = objects.getRequests( filtered=False )
     for i in range(0,len(richieste)):
         el = richieste[i]
@@ -94,17 +115,16 @@ def compileForm(name,objects):
 
         try:
             d = {}
-            d['entry.1911042707'] = el['AccountTwitch']
-            d['entry.1222566434'] = el['Richiesta']    
-            requests.post( moduloDiProva.replace("viewform","formResponse"),data=d)
-            print("Form Submitted for " + d['entry.1911042707'])
+            d[id_nome] = el['AccountTwitch']
+            d[id_richiesta] = el['Richiesta']    
+            requests.post( linkModulo.replace("viewform","formResponse"),data=d)
+            print("      \\__ Form Submitted for " + d[id_nome])
 
             el['Inserita'] = "Y"
             time.sleep(1)            
         except:
-            print("Error Occured!")               
-
-        
+            print("      \\__ Error Occured for " + d[id_nome])
+            
 
 def updateValues(service,disegni,canzoni):
     print( "Updating Google Sheet ..." )
@@ -149,7 +169,8 @@ if __name__ == '__main__':
     print( "Compiling Google forms ... " )
     compileForm("DISEGNI",RichiesteDisegni)
     compileForm("CANZONI",RichiesteCanzoni)    
-
+    print("")
+    
     ### Update Google Sheet
     updateValues( service,RichiesteDisegni,RichiesteCanzoni )
     
