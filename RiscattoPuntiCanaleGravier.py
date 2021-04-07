@@ -68,7 +68,7 @@ def retrieveValues():
     print( 'Getting google sheet "' + SAMPLE_SPREADSHEET_ID + '"' )
     
     # add credentials to the account
-    creds = ServiceAccountCredentials.from_json_keyfile_name('./data/RiscattoPuntiCanale-b1487f27cab1.json', SCOPES)
+    creds = ServiceAccountCredentials.from_json_keyfile_name('./data/client_secrets-riscattopunticanale.json', SCOPES)
     
     # authorize the clientsheet 
     client = gspread.authorize(creds)
@@ -102,10 +102,10 @@ def compileForm(name,objects):
     id_nome = objects.getFormIdName()
     id_richiesta = objects.getFormIdRichiesta()
     
-    ### TMP
-    linkModulo = "https://docs.google.com/forms/d/e/1FAIpQLSdIh7YJVqFpbs-X0AWkAukWRbKn4z-zYlLBPt1EbApVGdShig/viewform"
-    id_nome = 'entry.1911042707'
-    id_richiesta = 'entry.1222566434'
+    ### This is for Testing
+#    linkModulo = "https://docs.google.com/forms/d/e/1FAIpQLSdIh7YJVqFpbs-X0AWkAukWRbKn4z-zYlLBPt1EbApVGdShig/viewform"
+#    id_nome = 'entry.1911042707'
+#    id_richiesta = 'entry.1222566434'
 
     richieste = objects.getRequests( filtered=False )
     for i in range(0,len(richieste)):
