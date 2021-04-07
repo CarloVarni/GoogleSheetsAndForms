@@ -29,5 +29,5 @@ jobs:
 
       - name: execute py script
         run: |
-            python3 RiscattoPuntiCanaleGravier.py
+            python3 RiscattoPuntiCanaleGravier.py --official
         

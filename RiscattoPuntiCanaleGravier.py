@@ -91,11 +91,11 @@ def retrieveValues():
     return [service,values_disegni,values_canzoni]
 
 
-def compileForm(name,objects):
+def compileForm(objects,officialSubmit=False):
     import requests
     import time
 
-    print( "   \\__ Compiling Modules for " + name )
+    print( "   \\__ Compiling Modules for " + objects.name )
     print( "      \\__ Module: " + objects.modulo )
 
     linkModulo = objects.modulo
@@ -103,10 +103,11 @@ def compileForm(name,objects):
     id_richiesta = objects.getFormIdRichiesta()
     
     ### This is for Testing
-#    linkModulo = "https://docs.google.com/forms/d/e/1FAIpQLSdIh7YJVqFpbs-X0AWkAukWRbKn4z-zYlLBPt1EbApVGdShig/viewform"
-#    id_nome = 'entry.1911042707'
-#    id_richiesta = 'entry.1222566434'
-
+    if not officialSubmit:
+        linkModulo = "https://docs.google.com/forms/d/e/1FAIpQLSdIh7YJVqFpbs-X0AWkAukWRbKn4z-zYlLBPt1EbApVGdShig/viewform"
+        id_nome = 'entry.1911042707'
+        id_richiesta = 'entry.1222566434'
+        
     richieste = objects.getRequests( filtered=False )
     for i in range(0,len(richieste)):
         el = richieste[i]
@@ -157,6 +158,15 @@ def updateValues(service,disegni,canzoni):
     
 if __name__ == '__main__':
 
+    import getopt
+    import sys    
+    options, remainder = getopt.getopt(sys.argv[1:], '', ['official'])
+
+    officialRequest = False;
+    for opt,arg in options:
+        if opt == '--official':
+            officialRequest = True
+
     ### Read and Store Data from Google Sheet
     [service,disegni,canzoni] = retrieveValues()
     RichiesteDisegni = Richieste( "DISEGNI",disegni )
@@ -167,12 +177,13 @@ if __name__ == '__main__':
 
     ### Compile Form
     print( "Compiling Google forms ... " )
-    compileForm("DISEGNI",RichiesteDisegni)
-    compileForm("CANZONI",RichiesteCanzoni)    
+    compileForm(RichiesteDisegni,officialSubmit=officialRequest)
+    compileForm(RichiesteCanzoni,officialSubmit=officialRequest)    
     print("")
     
     ### Update Google Sheet
-    updateValues( service,RichiesteDisegni,RichiesteCanzoni )
+    if officialRequest:
+        updateValues( service,RichiesteDisegni,RichiesteCanzoni )
     
     
 
