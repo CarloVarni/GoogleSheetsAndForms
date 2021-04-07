@@ -20,6 +20,10 @@ jobs:
         with:
           python-version: 3.8 #install the python needed
 
+      - name: install required packages
+        run: |
+          pip install gspread oauth2client
+
       - name: execute py script
         run: |
             python3 RiscattoPuntiCanaleGravier.py
