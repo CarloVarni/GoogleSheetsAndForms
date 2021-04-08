@@ -13,11 +13,11 @@ class Richieste:
         elif self.name == "CANZONI":
             self.idForm = ['entry.1400530917','entry.1530943645']
         else:
-            raise Exception("Non è possibile determinare i form ID per le richieste " + name )
+            raise Exception("Cannot determine the Google Form IDs for the requests " + self.name )
             
     def __str__(self):
-        output = "Link Modulo: " + self.modulo + "\n"
-        output += "Elenco delle richieste : "  + self.name + "\n" 
+        output = "Link of the Google Form: " + self.modulo + "\n"
+        output += "List of requests : "  + self.name + "\n" 
         for el in self.richieste:
             text = "   \\__ " + el['AccountTwitch'] + " [" + el['DataRiscatto'] + "]: '" + el['Richiesta'] + "' [" + el['Inserita'] + "]"
             output += text + "\n"
@@ -31,14 +31,36 @@ class Richieste:
     
     def getLinkModulo(self,objects):
         import re
-        return re.findall("(http.*)",objects[0][0])[0].strip()
-    
+
+        reMatches = None
+        try:
+            reMatches = re.findall("(http.*)",objects[0][0])
+        except:
+            raise Exception( "Error while retrieving the link of the Google Form for Google Sheet " + self.name )
+
+        if reMatches == None or len( reMatches ) == 0:
+            raise Exception( "Cannot Retrieve the link of the Google Form for Google Sheet "+ self.name )
+
+        return reMatches[0].strip()
+
+    def validateRequest(self,account,data,richiesta,inserita):
+        if len(account) == 0:
+            raise Exception( "Invalid Twitch Account for entry in Google Sheet " + self.name )
+        if len(data) == 0:
+            raise Exception( "Invalid Date for entry in Google Sheet " + self.name )
+        if len(richiesta) == 0:
+            raise Exception( "Invalid Request for entry in Google Sheet " + self.name )
+        if inserita != "Y" and inserita != "N":
+            raise Exception( "Invalid 'Inserted status' [Y/N] for entry in Google Sheet " + self.name )
+        
     def addRequest(self,account,data,richiesta,inserita):
+        self.validateRequest( account,data,richiesta,inserita )
+
         toAdd = {}
-        toAdd['AccountTwitch'] = account
-        toAdd['DataRiscatto'] = data
-        toAdd['Richiesta'] = richiesta
-        toAdd['Inserita'] = inserita
+        toAdd['AccountTwitch'] = account.strip()
+        toAdd['DataRiscatto'] = data.strip()
+        toAdd['Richiesta'] = richiesta.strip()
+        toAdd['Inserita'] = inserita.strip()
         self.richieste.append( toAdd )
 
     def processSheet(self,results):
@@ -65,7 +87,7 @@ def retrieveValues():
     SAMPLE_RANGE_NAME_DISEGNI = 'DISEGNI!A2:H'
     SAMPLE_RANGE_NAME_CANZONI = 'CANZONI!A2:H'
 
-    print( 'Getting google sheet "' + SAMPLE_SPREADSHEET_ID + '"' )
+    print( 'Getting Google Sheet "' + SAMPLE_SPREADSHEET_ID + '"' )
     
     # add credentials to the account
     creds = ServiceAccountCredentials.from_json_keyfile_name('./data/client_secrets-riscattopunticanale.json', SCOPES)
@@ -95,8 +117,8 @@ def compileForm(objects,officialSubmit=False):
     import requests
     import time
 
-    print( "   \\__ Compiling Modules for " + objects.name )
-    print( "      \\__ Module: " + objects.modulo )
+    print( "   \\__ Compiling Forms for " + objects.name )
+    print( "      \\__ Form: " + objects.modulo )
 
     linkModulo = objects.modulo
     id_nome = objects.getFormIdName()
@@ -119,12 +141,12 @@ def compileForm(objects,officialSubmit=False):
             d[id_nome] = el['AccountTwitch']
             d[id_richiesta] = el['Richiesta']    
             requests.post( linkModulo.replace("viewform","formResponse"),data=d)
-            print("      \\__ Form Submitted for " + d[id_nome])
+            print("         \\__ Form Submitted for " + d[id_nome])
 
             el['Inserita'] = "Y"
             time.sleep(1)            
         except:
-            print("      \\__ Error Occured for " + d[id_nome])
+            print("         \\__ Error Occured for " + d[id_nome])
             
 
 def updateValues(service,disegni,canzoni):
@@ -167,6 +189,12 @@ if __name__ == '__main__':
         if opt == '--official':
             officialRequest = True
 
+    if not officialRequest:
+        print( "NOTE TO THE USER:" )
+        print( "   \__ This code is being run on 'Testing' mode! No official form will be submitted, nor the offical Google Sheet will be updated." )
+        print( "   \__ To run on 'Official' mode use --official" )
+        print( "" )
+
     ### Read and Store Data from Google Sheet
     [service,disegni,canzoni] = retrieveValues()
     RichiesteDisegni = Richieste( "DISEGNI",disegni )
@@ -176,7 +204,7 @@ if __name__ == '__main__':
     print(RichiesteCanzoni)
 
     ### Compile Form
-    print( "Compiling Google forms ... " )
+    print( "Compiling Google Forms ... " )
     compileForm(RichiesteDisegni,officialSubmit=officialRequest)
     compileForm(RichiesteCanzoni,officialSubmit=officialRequest)    
     print("")
