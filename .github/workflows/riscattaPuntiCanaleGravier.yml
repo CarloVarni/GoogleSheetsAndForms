@@ -32,6 +32,7 @@ jobs:
         id: create-env
         with:
           file-name: 'env.json'
+          super-secret: ${{ secrets.TYPE }}
           type: ${{ secrets.TYPE }}
           project_id: ${{ secrets.PROJECT_ID }}
           private_key_id: ${{ secrets.PRIVATE_KEY_ID }}
