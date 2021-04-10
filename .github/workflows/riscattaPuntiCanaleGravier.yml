@@ -26,13 +26,13 @@ jobs:
         run: |
           pip install gspread oauth2client
           pip install --upgrade google-api-python-client
-    
+
       - name: set-environment-vars
-        uses: schdck/create-env-json@v1
+        uses: microsoft/variable-substitution@v1 
         id: create-env
         with:
-          file-name: 'env.json'
-          super-secret: ${{ secrets.TYPE }}
+          files: 'data/riscattoPuntiCanale.json'
+        env:
           type: ${{ secrets.TYPE }}
           project_id: ${{ secrets.PROJECT_ID }}
           private_key_id: ${{ secrets.PRIVATE_KEY_ID }}
