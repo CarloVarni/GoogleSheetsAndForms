@@ -90,8 +90,12 @@ def retrieveValues(jsonFle):
     print( 'Getting Google Sheet "' + SAMPLE_SPREADSHEET_ID + '"' )
     
     # add credentials to the account
-    creds = ServiceAccountCredentials.from_json_keyfile_name(jsonFle, SCOPES)
-    
+    creds = None
+    try:
+        creds = ServiceAccountCredentials.from_json_keyfile_name(jsonFle, SCOPES)
+    except:
+        raise Exception("Error while getting Service Account Credentials ...!")
+        
     # authorize the clientsheet 
     client = gspread.authorize(creds)
     
@@ -195,6 +199,12 @@ if __name__ == '__main__':
         print( "   \__ To run on 'Official' mode use --official" )
         print( "" )
 
+    try:
+        myfile = open(jsonFile, "r")
+        myfile.close()
+    except:
+        raise Exception("JSON file cannot be opened!")
+        
     ### Read and Store Data from Google Sheet
     [service,disegni,canzoni] = retrieveValues(jsonFile)
     RichiesteDisegni = Richieste( "DISEGNI",disegni )
