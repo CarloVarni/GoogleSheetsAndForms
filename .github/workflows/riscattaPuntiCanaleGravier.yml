@@ -26,25 +26,20 @@ jobs:
         run: |
           pip install gspread oauth2client
           pip install --upgrade google-api-python-client
-    
+
       - name: set-environment-vars
-        uses: schdck/create-env-json@v1
+        uses: microsoft/variable-substitution@v1 
         id: create-env
         with:
-          file-name: 'env.json'
-          super-secret: ${{ secrets.TYPE }}
-          type: ${{ secrets.TYPE }}
-          project_id: ${{ secrets.PROJECT_ID }}
+          files: './data/riscattoPuntiCanale.json'
+        env:
           private_key_id: ${{ secrets.PRIVATE_KEY_ID }}
           private_key: ${{ secrets.PRIVATE_KEY }}
           client_id: ${{ secrets.CLIENT_ID }}
           client_email: ${{ secrets.CLIENT_EMAIL }}
-          auth_uri: ${{ secrets.AUTH_URI }}
-          token_uri: ${{ secrets.TOKEN_URI }}
-          auth_provider_x509_cert_url: ${{ secrets.AUTH_PROVIDER_CERT_URI }}
           client_x509_cert_url: ${{ secrets.CLIENT_CERT_URI }}
           
       - name: execute py script
         run: |
-            python3 RiscattoPuntiCanaleGravier.py --json=${{ steps.create-env.outputs.full-path }}
+            python3 RiscattoPuntiCanaleGravier.py --json=./data/riscattoPuntiCanale.json
         
