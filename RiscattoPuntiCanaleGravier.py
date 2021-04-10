@@ -74,7 +74,7 @@ class Richieste:
         return [x for x in self.richieste if x['Inserita'] == "Y" ]
 
     
-def retrieveValues():
+def retrieveValues(jsonFle):
     import gspread        
     from oauth2client.service_account import ServiceAccountCredentials
     from googleapiclient.discovery import build
@@ -90,7 +90,7 @@ def retrieveValues():
     print( 'Getting Google Sheet "' + SAMPLE_SPREADSHEET_ID + '"' )
     
     # add credentials to the account
-    creds = ServiceAccountCredentials.from_json_keyfile_name('./data/client_secrets-riscattopunticanale.json', SCOPES)
+    creds = ServiceAccountCredentials.from_json_keyfile_name(jsonFle, SCOPES)
     
     # authorize the clientsheet 
     client = gspread.authorize(creds)
@@ -180,14 +180,14 @@ def updateValues(service,disegni,canzoni):
     
 if __name__ == '__main__':
 
-    import getopt
-    import sys    
-    options, remainder = getopt.getopt(sys.argv[1:], '', ['official'])
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-o', '--official',action='store_true' )
+    parser.add_argument('-j', '--json', nargs=1, required=True )
+    args = parser.parse_args()    
 
-    officialRequest = False;
-    for opt,arg in options:
-        if opt == '--official':
-            officialRequest = True
+    jsonFile = args.json
+    officialRequest = args.official
 
     if not officialRequest:
         print( "NOTE TO THE USER:" )
@@ -196,7 +196,7 @@ if __name__ == '__main__':
         print( "" )
 
     ### Read and Store Data from Google Sheet
-    [service,disegni,canzoni] = retrieveValues()
+    [service,disegni,canzoni] = retrieveValues(jsonFile)
     RichiesteDisegni = Richieste( "DISEGNI",disegni )
     RichiesteCanzoni = Richieste( "CANZONI",canzoni )
     
