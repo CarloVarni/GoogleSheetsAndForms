@@ -31,7 +31,7 @@ jobs:
         uses: microsoft/variable-substitution@v1 
         id: create-env
         with:
-          files: 'data/riscattoPuntiCanale.json'
+          files: './data/riscattoPuntiCanale.json'
         env:
           type: ${{ secrets.TYPE }}
           project_id: ${{ secrets.PROJECT_ID }}
@@ -46,5 +46,5 @@ jobs:
           
       - name: execute py script
         run: |
-            python3 RiscattoPuntiCanaleGravier.py --json=${{ steps.create-env.outputs.full-path }}
+            python3 RiscattoPuntiCanaleGravier.py --json=./data/riscattoPuntiCanale.json
         
