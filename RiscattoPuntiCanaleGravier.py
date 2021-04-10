@@ -186,7 +186,7 @@ if __name__ == '__main__':
     parser.add_argument('-j', '--json', nargs=1, required=True )
     args = parser.parse_args()    
 
-    jsonFile = args.json
+    jsonFile = args.json[0]
     officialRequest = args.official
 
     if not officialRequest:
