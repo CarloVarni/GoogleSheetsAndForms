@@ -37,6 +37,7 @@ jobs:
           project_id: ${{ secrets.PROJECT_ID }}
           private_key_id: ${{ secrets.PRIVATE_KEY_ID }}
           private_key: ${{ secrets.PRIVATE_KEY }}
+          client_id: ${{ secrets.CLIENT_ID }}
           client_email: ${{ secrets.CLIENT_EMAIL }}
           auth_uri: ${{ secrets.AUTH_URI }}
           token_uri: ${{ secrets.TOKEN_URI }}
