@@ -37,7 +37,6 @@ jobs:
           private_key: ${{ secrets.PRIVATE_KEY }}
           client_id: ${{ secrets.CLIENT_ID }}
           client_email: ${{ secrets.CLIENT_EMAIL }}
-          auth_provider_x509_cert_url: ${{ secrets.AUTH_PROVIDER_CERT_URI }}
           client_x509_cert_url: ${{ secrets.CLIENT_CERT_URI }}
           
       - name: execute py script
