@@ -17,12 +17,15 @@ class Richieste:
             
     def __str__(self):
         output = "Link of the Google Form: " + self.modulo + "\n"
-        output += "List of requests : "  + self.name + "\n" 
+        output += "List of " + str(self.size()) + " requests : "  + self.name + "\n" 
         for el in self.richieste:
             text = "   \\__ " + el['AccountTwitch'] + " [" + el['DataRiscatto'] + "]: '" + el['Richiesta'] + "' [" + el['Inserita'] + "]"
             output += text + "\n"
         return output
 
+    def size(self):
+        return len(self.richieste)
+    
     def getFormIdName(self):
         return self.idForm[0]
 
@@ -133,6 +136,8 @@ def compileForm(objects,officialSubmit=False):
         linkModulo = "https://docs.google.com/forms/d/e/1FAIpQLSdIh7YJVqFpbs-X0AWkAukWRbKn4z-zYlLBPt1EbApVGdShig/viewform"
         id_nome = 'entry.1911042707'
         id_richiesta = 'entry.1222566434'
+
+    counterUpdatedRequests = 0
         
     richieste = objects.getRequests( filtered=False )
     for i in range(0,len(richieste)):
@@ -148,10 +153,12 @@ def compileForm(objects,officialSubmit=False):
             print("         \\__ Form Submitted for " + d[id_nome])
 
             el['Inserita'] = "Y"
+            counterUpdatedRequests = counterUpdatedRequests + 1
             time.sleep(1)            
         except:
             print("         \\__ Error Occured for " + d[id_nome])
-            
+
+    print( "      \\__ Total Entries Submitted : " + str( counterUpdatedRequests ) )
 
 def updateValues(service,disegni,canzoni):
     print( "Updating Google Sheet ..." )
@@ -209,10 +216,11 @@ if __name__ == '__main__':
     [service,disegni,canzoni] = retrieveValues(jsonFile)
     RichiesteDisegni = Richieste( "DISEGNI",disegni )
     RichiesteCanzoni = Richieste( "CANZONI",canzoni )
-    
+
+    print( "Total of " + str( RichiesteDisegni.size() + RichiesteCanzoni.size() ) + " entries... \n" )
     print(RichiesteDisegni)
     print(RichiesteCanzoni)
-
+    
     ### Compile Form
     print( "Compiling Google Forms ... " )
     compileForm(RichiesteDisegni,officialSubmit=officialRequest)
