@@ -1,4 +1,6 @@
 
+import re
+
 class bcolors:
     OK = '\033[1;92m' #GREEN
     WARNING = '\033[1;93m' #YELLOW
@@ -38,8 +40,6 @@ class Richieste:
         return self.idForm[1]
     
     def getLinkModulo(self,objects):
-        import re
-
         reMatches = None
         try:
             reMatches = re.findall("(http.*)",objects[0][0])
@@ -52,17 +52,34 @@ class Richieste:
         return reMatches[0].strip()
 
     def validateRequest(self,account,data,richiesta,inserita):
+        # Check account name
         if len(account) == 0:
             raise Exception( bcolors.FAIL + "Invalid Twitch Account for entry in Google Sheet " + self.name + bcolors.RESET )
-        if len(data) == 0:
+
+        # Chech date
+        calendarDate = re.findall("^([0-9]{2})/([0-9]{2})/([0-9]{4})$",data)
+        if len(data) == 0 or len(calendarDate) != 1:
             raise Exception( bcolors.FAIL + "Invalid Date for entry in Google Sheet " + self.name + bcolors.RESET )
+
+        [dd,mm,yyyy] = calendarDate[0]
+        dd,mm,yyyy = int(dd),int(mm),int(yyyy)
+        if mm > 12 or dd > 31 or yyyy < 2021:
+            raise Exception( bcolors.FAIL + "Invalid Date for entry in Google Sheet " + self.name + bcolors.RESET )
+        
+        # Check request entry
         if len(richiesta) == 0:
             raise Exception( bcolors.FAIL + "Invalid Request for entry in Google Sheet " + self.name + bcolors.RESET )
+
+        # check request status
         if inserita != "Y" and inserita != "N":
             raise Exception( bcolors.FAIL + "Invalid 'Inserted status' [Y/N] for entry in Google Sheet " + self.name + bcolors.RESET)
+
         
     def addRequest(self,account,data,richiesta,inserita):
-        self.validateRequest( account,data,richiesta,inserita )
+        self.validateRequest( account.strip(),
+                              data.strip(),
+                              richiesta.strip(),
+                              inserita.strip() )
 
         toAdd = {}
         toAdd['AccountTwitch'] = account.strip()
