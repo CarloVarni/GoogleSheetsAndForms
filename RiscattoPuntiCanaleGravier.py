@@ -2,9 +2,9 @@
 import re
 
 class bcolors:
-    OK = '\033[1;92m' #GREEN
-    WARNING = '\033[1;93m' #YELLOW
-    FAIL = '\033[1;91m' #RED
+    OK = '\033[1;32m' #GREEN
+    WARNING = '\033[1;33m' #YELLOW
+    FAIL = '\033[1;31m' #RED
     NOTE = '\033[1;35m' #PURPLE 
     RESET = '\033[0;0m' #RESET COLOR
     
