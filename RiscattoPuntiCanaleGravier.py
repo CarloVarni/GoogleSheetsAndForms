@@ -28,7 +28,8 @@ class Richieste:
         output += "Link of the Google Form: " + self.modulo + "\n"
         output += "List of " + str(self.size()) + " requests : "  + self.name + "\n" 
         for el in self.richieste:
-            text = "   \\__ " + el['AccountTwitch'] + " [" + el['DataRiscatto'] + "]: '" + el['Richiesta'] + "' ["
+            text = "   \\__ "
+            text += "["
             if el['Inserita'] == "Y":
                 text += bcolors.OK
             elif el['Inserita'] == "C":
@@ -37,7 +38,8 @@ class Richieste:
                 text += bcolors.FAIL
 
             text += el['Inserita'] + bcolors.RESET
-            text +="]"
+            text +="] "
+            text += el['AccountTwitch'] + " [" + el['DataRiscatto'] + "]: '" + el['Richiesta']  + "'"
             output += text + "\n"
         return output
 
