@@ -14,6 +14,7 @@ class Richieste:
         self.__modulo: str = self.getLinkModulo( results )
         self.__idForm: list = []
         self.__richieste: list = []
+        self.__size: list = [0,0,0] # Y/OTHER/N
         self.processSheet( results )
 
         if self.name == "DISEGNI":
@@ -37,8 +38,8 @@ class Richieste:
     
     def __str__(self):
         output = bcolors.NOTE + "Summary of requests for Google Sheet: " + self.name + bcolors.RESET + "\n" 
-        output += "Link of the Google Form: " + self.modulo + "\n"
-        output += "List of " + str(self.size()) + " requests : "  + self.name + "\n" 
+        output += "Link of the Google Form: '" + self.modulo + "'\n"
+        output += "List of " + str(self.size()) + " " + self.sizeText() + " requests : "  + self.name + "\n" 
         for el in self.richieste:
             text = "   \\__ ["
             if el['Inserita'] == "Y":
@@ -53,8 +54,17 @@ class Richieste:
             output += text + "\n"
         return output
 
-    def size(self):
-        return len(self.richieste)
+    def size(self,component=""):
+        if component == "": return sum(self.__size)
+        if component == "Y": return self.__size[0]
+        if component == "N": return self.__size[2]
+        return self.__size[1]
+
+    def sizeText(self):
+        text = "[{},{},{}]".format( bcolors.OK + str(self.__size[0]) + bcolors.RESET,
+                                    bcolors.WARNING + str(self.__size[1]) + bcolors.RESET,
+                                    bcolors.FAIL + str(self.__size[2]) + bcolors.RESET )
+        return text
     
     def getFormIdName(self):
         return self.__idForm[0]
@@ -115,7 +125,13 @@ class Richieste:
         for i in range(3,len(results)):
             el = results[i]
             self.addRequest( el[0],el[1],el[2],el[7] )
-
+            if el[7] == "Y":
+                self.__size[0] += 1
+            elif el[7] == "N":
+                self.__size[2] += 1
+            else:
+                self.__size[1] += 1
+                
     def getRequests(self,filtered):
         if not filtered:
             return self.richieste
