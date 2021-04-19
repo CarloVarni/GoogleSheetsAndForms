@@ -9,27 +9,38 @@ class bcolors:
     RESET = '\033[0;0m' #RESET COLOR
     
 class Richieste:
-    def __init__(self,name,results):
-        self.name = name
-        self.modulo = self.getLinkModulo( results )
-        self.idForm = []
-        self.richieste = []
+    def __init__(self,name: str,results: list):
+        self.__name: str = name
+        self.__modulo: str = self.getLinkModulo( results )
+        self.__idForm: list = []
+        self.__richieste: list = []
         self.processSheet( results )
 
         if self.name == "DISEGNI":
-            self.idForm = ['entry.1943497073','entry.1374345851']
+            self.__idForm = ['entry.1943497073','entry.1374345851']
         elif self.name == "CANZONI":
-            self.idForm = ['entry.1400530917','entry.1530943645']
+            self.__idForm = ['entry.1400530917','entry.1530943645']
         else:
             raise Exception( bcolors.FAIL + "Cannot determine the Google Form IDs for the requests " + self.name + bcolors.RESET )
-            
+
+    @property
+    def name(self):
+        return self.__name
+
+    @property
+    def modulo(self):
+        return self.__modulo
+    
+    @property
+    def richieste(self):
+        return self.__richieste
+    
     def __str__(self):
         output = bcolors.NOTE + "Summary of requests for Google Sheet: " + self.name + bcolors.RESET + "\n" 
         output += "Link of the Google Form: " + self.modulo + "\n"
         output += "List of " + str(self.size()) + " requests : "  + self.name + "\n" 
         for el in self.richieste:
-            text = "   \\__ "
-            text += "["
+            text = "   \\__ ["
             if el['Inserita'] == "Y":
                 text += bcolors.OK
             elif el['Inserita'] == "C":
@@ -37,9 +48,8 @@ class Richieste:
             else:
                 text += bcolors.FAIL
 
-            text += el['Inserita'] + bcolors.RESET
-            text +="] "
-            text += el['AccountTwitch'] + " [" + el['DataRiscatto'] + "]: '" + el['Richiesta']  + "'"
+            text += "{0}{1}] ".format(el['Inserita'],bcolors.RESET) 
+            text += "{0} [{1}]: '{2}'".format(el['AccountTwitch'],el['DataRiscatto'],el['Richiesta'])
             output += text + "\n"
         return output
 
@@ -47,10 +57,10 @@ class Richieste:
         return len(self.richieste)
     
     def getFormIdName(self):
-        return self.idForm[0]
+        return self.__idForm[0]
 
     def getFormIdRichiesta(self):
-        return self.idForm[1]
+        return self.__idForm[1]
     
     def getLinkModulo(self,objects):
         reMatches = None
@@ -256,7 +266,7 @@ if __name__ == '__main__':
     [service,disegni,canzoni] = retrieveValues(jsonFile)
     RichiesteDisegni = Richieste( "DISEGNI",disegni )
     RichiesteCanzoni = Richieste( "CANZONI",canzoni )
-
+    
     print( bcolors.OK + "Total of " + str( RichiesteDisegni.size() + RichiesteCanzoni.size() ) + " entries... \n" + bcolors.RESET )
     print(RichiesteDisegni)
     print(RichiesteCanzoni)
@@ -276,3 +286,4 @@ if __name__ == '__main__':
 
 
     
+
