@@ -54,20 +54,23 @@ class Richieste:
                 text += bcolors.FAIL
 
             text += "{0}{1}] ".format(el['Inserita'], bcolors.RESET)
-            text += "{0} [{1}]: '{2}'".format(el['AccountTwitch'],el['DataRiscatto'],el['Richiesta'])
+            text += "{0} [{1}]: '{2}'".format(el['AccountTwitch'], el['DataRiscatto'], el['Richiesta'])
             output += text + "\n"
         return output
 
-    def size(self,component=""):
-        if component == "": return sum(self.__size)
-        if component == "Y": return self.__size[0]
-        if component == "N": return self.__size[2]
+    def size(self, component=""):
+        if component == "":
+            return sum(self.__size)
+        if component == "Y":
+            return self.__size[0]
+        if component == "N":
+            return self.__size[2]
         return self.__size[1]
 
     def sizeText(self):
-        text = "[{},{},{}]".format( bcolors.OK + str(self.__size[0]) + bcolors.RESET,
-                                    bcolors.WARNING + str(self.__size[1]) + bcolors.RESET,
-                                    bcolors.FAIL + str(self.__size[2]) + bcolors.RESET )
+        text = "[{},{},{}]".format(bcolors.OK + str(self.__size[0]) + bcolors.RESET,
+                                   bcolors.WARNING + str(self.__size[1]) + bcolors.RESET,
+                                   bcolors.FAIL + str(self.__size[2]) + bcolors.RESET)
         return text
     
     def getFormIdName(self):
@@ -76,59 +79,58 @@ class Richieste:
     def getFormIdRichiesta(self):
         return self.__idForm[1]
     
-    def getLinkModulo(self,objects):
+    def getLinkModulo(self, objects):
         reMatches = None
         try:
-            reMatches = re.findall("(http.*)",objects[0][0])
-        except:
-            raise Exception( bcolors.FAIL + "Error while retrieving the link of the Google Form for Google Sheet " + self.name + bcolors.RESET )
+            reMatches = re.findall("(http.*)", objects[0][0])
+        except Exception:
+            raise Exception(bcolors.FAIL + "Error while retrieving the link of the Google Form for Google Sheet " + self.name + bcolors.RESET)
 
-        if reMatches == None or len( reMatches ) == 0:
-            raise Exception( bcolors.FAIL + "Cannot Retrieve the link of the Google Form for Google Sheet "+ self.name + bcolors.RESET )
+        if reMatches is None or len(reMatches) == 0:
+            raise Exception(bcolors.FAIL + "Cannot Retrieve the link of the Google Form for Google Sheet " + self.name + bcolors.RESET)
 
         return reMatches[0].strip()
 
-    def validateRequest(self,account,data,richiesta,inserita):
+    def validateRequest(self, account, data, richiesta, inserita):
         # Check account name
         if len(account) == 0:
-            raise Exception( bcolors.FAIL + "Invalid Twitch Account for entry in Google Sheet " + self.name + bcolors.RESET )
+            raise Exception(bcolors.FAIL + "Invalid Twitch Account for entry in Google Sheet " + self.name + bcolors.RESET)
 
         # Chech date
-        calendarDate = re.findall("^([0-9]{2})/([0-9]{2})/([0-9]{4})$",data)
+        calendarDate = re.findall("^([0-9]{2})/([0-9]{2})/([0-9]{4})$", data)
         if len(data) == 0 or len(calendarDate) != 1:
-            raise Exception( bcolors.FAIL + "Invalid Date for entry in Google Sheet " + self.name + bcolors.RESET )
+            raise Exception(bcolors.FAIL + "Invalid Date for entry in Google Sheet " + self.name + bcolors.RESET)
 
-        [dd,mm,yyyy] = calendarDate[0]
-        dd,mm,yyyy = int(dd),int(mm),int(yyyy)
+        [dd, mm, yyyy] = calendarDate[0]
+        dd, mm, yyyy = int(dd), int(mm), int(yyyy)
         if mm > 12 or dd > 31 or yyyy < 2021:
-            raise Exception( bcolors.FAIL + "Invalid Date for entry in Google Sheet " + self.name + bcolors.RESET )
-        
+            raise Exception(bcolors.FAIL + "Invalid Date for entry in Google Sheet " + self.name + bcolors.RESET)
+
         # Check request entry
         if len(richiesta) == 0:
-            raise Exception( bcolors.FAIL + "Invalid Request for entry in Google Sheet " + self.name + bcolors.RESET )
+            raise Exception(bcolors.FAIL + "Invalid Request for entry in Google Sheet " + self.name + bcolors.RESET)
 
         # check request status
         if inserita != "Y" and inserita != "N" and inserita != "C":
-            raise Exception( bcolors.FAIL + "Invalid 'Inserted status' [Y/N] for entry in Google Sheet " + self.name + bcolors.RESET)
+            raise Exception(bcolors.FAIL + "Invalid 'Inserted status' [Y/N] for entry in Google Sheet " + self.name + bcolors.RESET)
 
-        
-    def addRequest(self,account,data,richiesta,inserita):
-        self.validateRequest( account.strip(),
-                              data.strip(),
-                              richiesta.strip(),
-                              inserita.strip() )
+def addRequest(self, account, data, richiesta, inserita):
+        self.validateRequest(account.strip(),
+                             data.strip(),
+                             richiesta.strip(),
+                             inserita.strip())
 
         toAdd = {}
         toAdd['AccountTwitch'] = account.strip()
         toAdd['DataRiscatto'] = data.strip()
         toAdd['Richiesta'] = richiesta.strip()
         toAdd['Inserita'] = inserita.strip()
-        self.richieste.append( toAdd )
+        self.richieste.append(toAdd)
 
-    def processSheet(self,results):
-        for i in range(3,len(results)):
+    def processSheet(self, results):
+        for i in range(3, len(results)):
             el = results[i]
-            self.addRequest( el[0],el[1],el[2],el[7] )
+            self.addRequest(el[0], el[1], el[2], el[7])
             if el[7] == "Y":
                 self.__size[0] += 1
             elif el[7] == "N":
@@ -136,17 +138,17 @@ class Richieste:
             else:
                 self.__size[1] += 1
                 
-    def getRequests(self,filtered):
+    def getRequests(self, filtered):
         if not filtered:
             return self.richieste
-        return [x for x in self.richieste if x['Inserita'] == "Y" ]
+        return [x for x in self.richieste if x['Inserita'] == "Y"]
 
-    
+
 def retrieveValues(jsonFle):
-    import gspread        
+    import gspread
     from oauth2client.service_account import ServiceAccountCredentials
     from googleapiclient.discovery import build
-    
+
     # define the scope
     SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
@@ -155,48 +157,48 @@ def retrieveValues(jsonFle):
     SAMPLE_RANGE_NAME_DISEGNI = 'DISEGNI!A2:H'
     SAMPLE_RANGE_NAME_CANZONI = 'CANZONI!A2:H'
 
-    print( bcolors.NOTE + "Reading data from Google Sheet ... " + bcolors.RESET )
-    print( 'Getting Google Sheet "' + SAMPLE_SPREADSHEET_ID + '"' )
-    
+    print(bcolors.NOTE + "Reading data from Google Sheet ... " + bcolors.RESET)
+    print('Getting Google Sheet "' + SAMPLE_SPREADSHEET_ID + '"')
+
     # add credentials to the account
     creds = None
     try:
         creds = ServiceAccountCredentials.from_json_keyfile_name(jsonFle, SCOPES)
-    except:
-        raise Exception( bcolors.FAIL + "Error while getting Service Account Credentials ...!" + bcolors.RESET)
-        
+    except Exception:
+        raise Exception(bcolors.FAIL + "Error while getting Service Account Credentials ...!" + bcolors.RESET)
+
     # authorize the clientsheet 
     client = gspread.authorize(creds)
-    
+
     service = build('sheets', 'v4', credentials=creds)
-    
+
     # Read Sheet dei disegni    
-    print( "   \\__ Retrieving DISEGNI sheet..." )
+    print("   \\__ Retrieving DISEGNI sheet...")
     sheet_disegni = service.spreadsheets()
     result_disegni = sheet_disegni.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID,
                                                 range=SAMPLE_RANGE_NAME_DISEGNI).execute()
     values_disegni = result_disegni.get('values', [])
 
-    print( "   \\__ Retrieving CANZONI sheet..." )
+    print("   \\__ Retrieving CANZONI sheet...")
     sheet_canzoni = service.spreadsheets()
     result_canzoni = sheet_canzoni.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID,
                                                 range=SAMPLE_RANGE_NAME_CANZONI).execute()
     values_canzoni = result_canzoni.get('values', [])
     print("")
-    return [service,values_disegni,values_canzoni]
+    return [service, values_disegni, values_canzoni]
 
 
-def compileForm(objects,officialSubmit=False):
+def compileForm(objects, officialSubmit=False):
     import requests
     import time
 
-    print( "   \\__ Compiling Forms for " + objects.name )
-    print( "      \\__ Form: " + objects.modulo )
+    print("   \\__ Compiling Forms for " + objects.name)
+    print("      \\__ Form: " + objects.modulo)
 
     linkModulo = objects.modulo
     id_nome = objects.getFormIdName()
     id_richiesta = objects.getFormIdRichiesta()
-    
+
     ### This is for Testing
     if not officialSubmit:
         linkModulo = "https://docs.google.com/forms/d/e/1FAIpQLSdIh7YJVqFpbs-X0AWkAukWRbKn4z-zYlLBPt1EbApVGdShig/viewform"
@@ -205,9 +207,9 @@ def compileForm(objects,officialSubmit=False):
 
     counterUpdatedRequests = 0
     counterFailedRequests = 0
-    
-    richieste = objects.getRequests( filtered=False )
-    for i in range(0,len(richieste)):
+
+    richieste = objects.getRequests(filtered=False)
+    for i in range(0, len(richieste)):
         el = richieste[i]
         if el['Inserita'] != "N":
             continue;
@@ -216,94 +218,87 @@ def compileForm(objects,officialSubmit=False):
             d = {}
             d[id_nome] = el['AccountTwitch']
             d[id_richiesta] = el['Richiesta']    
-            requests.post( linkModulo.replace("viewform","formResponse"),data=d)
-            print( "         \\__ Form Submitted for: " + d[id_nome])
+            requests.post(linkModulo.replace("viewform", "formResponse"), data=d)
+            print("         \\__ Form Submitted for: " + d[id_nome])
 
             el['Inserita'] = "Y"
             counterUpdatedRequests += 1
             time.sleep(1)            
-        except:
-            print( bcolors.FAIL + "         \\__ Error Occured for " + d[id_nome] + bcolors.RESET)
+        except Exception:
+            print(bcolors.FAIL + "         \\__ Error Occured for " + d[id_nome] + bcolors.RESET)
             counterFailedRequests += 1
-            
-    print( bcolors.OK + "      \\__ Total Entries Submitted : " + str( counterUpdatedRequests ) + bcolors.RESET )
-    if counterFailedRequests != 0:
-        print( bcolors.FAIL + "         \\__ Total Entries Failed : " + str( counterFailedRequests ) + bcolors.RESET )
 
-def updateValues(service,disegni,canzoni):
-    print( bcolors.NOTE + "Updating Google Sheet ..." + bcolors.RESET )
-    
+    print(bcolors.OK + "      \\__ Total Entries Submitted : " + str(counterUpdatedRequests) + bcolors.RESET)
+    if counterFailedRequests != 0:
+        print(bcolors.FAIL + "         \\__ Total Entries Failed : " + str(counterFailedRequests) + bcolors.RESET)
+
+def updateValues(service, disegni, canzoni):
+    print(bcolors.NOTE + "Updating Google Sheet ..." + bcolors.RESET)
+
     # The ID and range of a sample spreadsheet.   
     SAMPLE_SPREADSHEET_ID = '16d1gW6F5CFTNRySIWiJbpjKFmgFvkT5PpsJnT0oFZuY'
     SAMPLE_RANGE_NAME_DISEGNI = 'DISEGNI!H5:H'
     SAMPLE_RANGE_NAME_CANZONI = 'CANZONI!H5:H'
 
     ## Update Disegni
-    RichiesteDisegni = disegni.getRequests( filtered=False )
-    value_range_body_disegni = {'values': [ [x['Inserita'] for x in RichiesteDisegni] ],
+    RichiesteDisegni = disegni.getRequests(filtered=False)
+    value_range_body_disegni = {'values': [[x['Inserita'] for x in RichiesteDisegni]],
                                 'majorDimension' : 'COLUMNS'}
     service.spreadsheets().values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID,
                                            range=SAMPLE_RANGE_NAME_DISEGNI,
                                            valueInputOption="RAW",
                                            body=value_range_body_disegni).execute()
-    print( "   \\__ Google sheet updated : DISEGNI" )
-    
+    print("   \\__ Google sheet updated : DISEGNI")
+
     ## Update Canzoni
-    RichiesteCanzoni = canzoni.getRequests( filtered=False )
-    value_range_body_canzoni = {'values': [ [x['Inserita'] for x in RichiesteCanzoni] ],
+    RichiesteCanzoni = canzoni.getRequests(filtered=False)
+    value_range_body_canzoni = {'values': [[x['Inserita'] for x in RichiesteCanzoni]],
                                 'majorDimension' : 'COLUMNS'}
     service.spreadsheets().values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID,
                                            range=SAMPLE_RANGE_NAME_CANZONI,
                                            valueInputOption="RAW",
                                            body=value_range_body_canzoni).execute()
-    print( "   \\__ Google sheet updated : CANZONI" )
+    print("   \\__ Google sheet updated : CANZONI")
 
-    
+
 if __name__ == '__main__':
 
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('-o', '--official',action='store_true' )
-    parser.add_argument('-j', '--json', nargs=1, required=True )
+    parser.add_argument('-o', '--official', action='store_true')
+    parser.add_argument('-j', '--json', nargs=1, required=True)
     args = parser.parse_args()    
 
     jsonFile = args.json[0]
     officialRequest = args.official
 
     if not officialRequest:
-        print( bcolors.WARNING + "NOTE TO THE USER:" + bcolors.RESET )
-        print( bcolors.WARNING + "   \__ This code is being run on 'Testing' mode! No official form will be submitted, nor the offical Google Sheet will be updated." + bcolors.RESET )
-        print( bcolors.WARNING + "   \__ To run on 'Official' mode use --official" + bcolors.RESET )
-        print( "" )
+        print(bcolors.WARNING + "NOTE TO THE USER:" + bcolors.RESET)
+        print(bcolors.WARNING + "   \__ This code is being run on 'Testing' mode! No official form will be submitted, nor the offical Google Sheet will be updated." + bcolors.RESET)
+        print(bcolors.WARNING + "   \__ To run on 'Official' mode use --official" + bcolors.RESET)
+        print()
 
     try:
         myfile = open(jsonFile, "r")
         myfile.close()
-    except:
-        raise Exception( bcolors.FAIL + "JSON file cannot be opened!" + bcolors.RESET )
-        
+    except Exception:
+        raise Exception(bcolors.FAIL + "JSON file cannot be opened!" + bcolors.RESET)
+
     ### Read and Store Data from Google Sheet
-    [service,disegni,canzoni] = retrieveValues(jsonFile)
-    RichiesteDisegni = Richieste( "DISEGNI",disegni )
-    RichiesteCanzoni = Richieste( "CANZONI",canzoni )
-    
-    print( bcolors.OK + "Total of " + str( RichiesteDisegni.size() + RichiesteCanzoni.size() ) + " entries... \n" + bcolors.RESET )
+    [service, disegni, canzoni] = retrieveValues(jsonFile)
+    RichiesteDisegni = Richieste("DISEGNI", disegni)
+    RichiesteCanzoni = Richieste("CANZONI", canzoni)
+
+    print(bcolors.OK + "Total of " + str(RichiesteDisegni.size() + RichiesteCanzoni.size()) + " entries... \n" + bcolors.RESET)
     print(RichiesteDisegni)
     print(RichiesteCanzoni)
-    
+
     ### Compile Form
-    print( bcolors.NOTE + "Compiling Google Forms ... " + bcolors.RESET )
-    compileForm(RichiesteDisegni,officialSubmit=officialRequest)
-    compileForm(RichiesteCanzoni,officialSubmit=officialRequest)    
-    print("")
-    
+    print(bcolors.NOTE + "Compiling Google Forms ... " + bcolors.RESET)
+    compileForm(RichiesteDisegni, officialSubmit=officialRequest)
+    compileForm(RichiesteCanzoni, officialSubmit=officialRequest)    
+    print()
+
     ### Update Google Sheet
     if officialRequest:
-        updateValues( service,RichiesteDisegni,RichiesteCanzoni )
-    
-    
-
-
-
-    
-
+        updateValues(service, RichiesteDisegni, RichiesteCanzoni)
