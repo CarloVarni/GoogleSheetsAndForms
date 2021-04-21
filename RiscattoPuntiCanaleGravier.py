@@ -72,13 +72,13 @@ class Richieste:
                                    bcolors.WARNING + str(self.__size[1]) + bcolors.RESET,
                                    bcolors.FAIL + str(self.__size[2]) + bcolors.RESET)
         return text
-    
+
     def getFormIdName(self):
         return self.__idForm[0]
 
     def getFormIdRichiesta(self):
         return self.__idForm[1]
-    
+
     def getLinkModulo(self, objects):
         reMatches = None
         try:
@@ -114,19 +114,19 @@ class Richieste:
         if inserita != "Y" and inserita != "N" and inserita != "C":
             raise Exception(bcolors.FAIL + "Invalid 'Inserted status' [Y/N] for entry in Google Sheet " + self.name + bcolors.RESET)
 
-def addRequest(self, account, data, richiesta, inserita):
+    def addRequest(self, account, data, richiesta, inserita):
         self.validateRequest(account.strip(),
                              data.strip(),
                              richiesta.strip(),
                              inserita.strip())
-
+        
         toAdd = {}
         toAdd['AccountTwitch'] = account.strip()
         toAdd['DataRiscatto'] = data.strip()
         toAdd['Richiesta'] = richiesta.strip()
         toAdd['Inserita'] = inserita.strip()
         self.richieste.append(toAdd)
-
+        
     def processSheet(self, results):
         for i in range(3, len(results)):
             el = results[i]
