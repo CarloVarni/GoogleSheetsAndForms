@@ -26,7 +26,6 @@ jobs:
         run: |
           pip install gspread oauth2client
           pip install --upgrade google-api-python-client
-
       - name: set-environment-vars
         uses: microsoft/variable-substitution@v1 
         id: create-env
@@ -41,4 +40,5 @@ jobs:
           
       - name: execute py script
         run: |
-	    python3 RiscattoPuntiCanaleGravier.py --json ./data/riscattoPuntiCanale.json --official
+            python3 RiscattoPuntiCanaleGravier.py --json=./data/riscattoPuntiCanale.json --official
+        
