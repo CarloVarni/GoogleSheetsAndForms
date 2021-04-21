@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - './*.py'
-      - './GoogleSheetsAndForms/*.py'
+      - './*/*.py'
 #  schedule:
 #    - cron: "0 12 * * *" # Runs at 12 UTC (i.e. 2 p.m. CET/CEST - 5 a.m. PST) every day
 #    paths:
@@ -13,7 +13,7 @@ on:
   workflow_dispatch:
     paths:
       - './*.py'
-      - './GoogleSheetsAndForms/*.py'
+      - './*/*.py'
   
 
 jobs:
