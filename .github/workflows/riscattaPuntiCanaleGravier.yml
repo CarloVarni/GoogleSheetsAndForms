@@ -41,5 +41,4 @@ jobs:
           
       - name: execute py script
         run: |
-	    python3 RiscattoPuntiCanaleGravier.py --json ./data/riscattoPuntiCanale.json #--official
-	    
+	    python3 RiscattoPuntiCanaleGravier.py --json ./data/riscattoPuntiCanale.json --official
