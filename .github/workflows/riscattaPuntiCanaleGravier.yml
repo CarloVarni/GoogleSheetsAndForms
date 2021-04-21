@@ -41,8 +41,7 @@ jobs:
           
       - name: execute py script
         run: |
-            echo "PYTHONPATH = "${PYTHONPATH}
             export myDIR=(`pwd`)
-            echo "WORKING DIR = "${myDIR}
-            python3 RiscattoPuntiCanaleGravier.py --json=./data/riscattoPuntiCanale.json #--official
+	    export PYTHONPATH="${WORKING}:${PYTHONPATH}"
+	    python3 test/RiscattoPuntiCanaleGravier.py --json=./data/riscattoPuntiCanale.json #--official
         
