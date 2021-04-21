@@ -2,7 +2,6 @@
 import re
 
 
-
 class bcolors:
     OK = '\033[1;32m'   # GREEN
     WARNING = '\033[1;33m'   # YELLOW
@@ -11,23 +10,23 @@ class bcolors:
     RESET = '\033[0;0m'   # RESET COLOR
 
 
-
-
 class Richieste:
     def __init__(self, name: str, results: list):
         self.__name: str = name
-        self.__modulo: str = self.getLinkModulo( results )
+        self.__modulo: str = self.getLinkModulo(results)
         self.__idForm: list = []
         self.__richieste: list = []
-        self.__size: list = [0,0,0] # Y/OTHER/N
-        self.processSheet( results )
+        self.__size: list = [0, 0, 0]  # Y/OTHER/N
+        self.processSheet(results)
 
         if self.name == "DISEGNI":
-            self.__idForm = ['entry.1943497073','entry.1374345851']
+            self.__idForm = ['entry.1943497073', 'entry.1374345851']
         elif self.name == "CANZONI":
-            self.__idForm = ['entry.1400530917','entry.1530943645']
+            self.__idForm = ['entry.1400530917', 'entry.1530943645']
         else:
-            raise Exception( bcolors.FAIL + "Cannot determine the Google Form IDs for the requests " + self.name + bcolors.RESET )
+            raise Exception(bcolors.FAIL +
+                            "Cannot determine the Google Form IDs for the requests " +
+                            self.name + bcolors.RESET)
 
     @property
     def name(self):
@@ -36,15 +35,15 @@ class Richieste:
     @property
     def modulo(self):
         return self.__modulo
-    
+
     @property
     def richieste(self):
         return self.__richieste
-    
+
     def __str__(self):
-        output = bcolors.NOTE + "Summary of requests for Google Sheet: " + self.name + bcolors.RESET + "\n" 
+        output = bcolors.NOTE + "Summary of requests for Google Sheet: " + self.name + bcolors.RESET + "\n"
         output += "Link of the Google Form: '" + self.modulo + "'\n"
-        output += "List of " + str(self.size()) + " " + self.sizeText() + " requests : "  + self.name + "\n" 
+        output += "List of " + str(self.size()) + " " + self.sizeText() + " requests : " + self.name + "\n"
         for el in self.richieste:
             text = "   \\__ ["
             if el['Inserita'] == "Y":
@@ -54,7 +53,7 @@ class Richieste:
             else:
                 text += bcolors.FAIL
 
-            text += "{0}{1}] ".format(el['Inserita'],bcolors.RESET) 
+            text += "{0}{1}] ".format(el['Inserita'], bcolors.RESET)
             text += "{0} [{1}]: '{2}'".format(el['AccountTwitch'],el['DataRiscatto'],el['Richiesta'])
             output += text + "\n"
         return output
