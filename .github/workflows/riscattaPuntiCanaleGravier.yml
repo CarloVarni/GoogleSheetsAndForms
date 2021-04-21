@@ -41,7 +41,8 @@ jobs:
           
       - name: execute py script
         run: |
-            echo ${PYTHONPATH}
-            pwd
+            echo "PYTHONPATH = "${PYTHONPATH}
+            export myDIR=(`pwd`)
+            echo "WORKING DIR = "${myDIR}
             python3 RiscattoPuntiCanaleGravier.py --json=./data/riscattoPuntiCanale.json #--official
         
