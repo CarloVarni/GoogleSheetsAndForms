@@ -35,5 +35,5 @@ jobs:
       - name: flake8 Lint
         uses: py-actions/flake8@v1
         with:
-          ignore: "E501"        
+          ignore: "E501,E302,W293"        
   
