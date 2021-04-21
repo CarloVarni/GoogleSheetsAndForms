@@ -1,12 +1,11 @@
 name: Run Flake8 Against Repository
 
 on:
-  push:
   pull_request:
   schedule:
     - cron: "0 12 * * *" # Runs at 12 UTC (i.e. 2 p.m. CET/CEST - 5 a.m. PST) every day
   workflow_dispatch:
-      
+
 jobs:
   flake8-lint:
     runs-on: macos-latest
@@ -19,9 +18,9 @@ jobs:
         uses: actions/setup-python@v1
         with:
           python-version: 3.8
-          
+
       - name: flake8 Lint
         uses: py-actions/flake8@v1
         with:
-          ignore: "E501,E302,W293"        
-  
+          ignore: "E501,E302,W293,W291,E303"
+
