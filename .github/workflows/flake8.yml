@@ -1,7 +1,7 @@
 name: Run Flake8 Against Repository
 
 on:
-  pull_request:
+  push:
   schedule:
     - cron: "0 12 * * *" # Runs at 12 UTC (i.e. 2 p.m. CET/CEST - 5 a.m. PST) every day
   workflow_dispatch:
@@ -22,5 +22,4 @@ jobs:
       - name: flake8 Lint
         uses: py-actions/flake8@v1
         with:
-          ignore: "E501,E302,W293,W291,E303"
-
+          ignore: "E501,E302,W293,W291,E303"  
