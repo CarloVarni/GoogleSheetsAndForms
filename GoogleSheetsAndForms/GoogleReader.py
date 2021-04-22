@@ -1,5 +1,5 @@
 
-from GoogleSheetsAndForms.Messages import FAIL
+from GoogleSheetsAndForms.Messages import NOTE, FAIL
 
 class GoogleReader:
     def __init__(self, NAME, SPREADSHEET_ID, RANGE):
@@ -34,6 +34,10 @@ class GoogleReader:
 
         if len(self.ValuesCollectionName) != len(self.__RANGE):
             raise Exception(FAIL("Different number of RANGES and Collection Names for '{0}'".format(self.NAME)))
+
+        print(NOTE("Reading data from Google Sheet ... "))
+        print("   \\__ Getting Google Sheet '{}' with range(s) '{}'".format(self.SPREADSHEET_ID,self.RANGE))
+        print()
         
         result = CTX.retrieve("__SERVICE").spreadsheets().values().batchGet(spreadsheetId=self.SPREADSHEET_ID,
                                                                             ranges=self.RANGE).execute()
