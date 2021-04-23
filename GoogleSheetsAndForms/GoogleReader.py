@@ -23,7 +23,7 @@ class GoogleReader:
 
     def __str__(self):
         output = "GoogleReader: '" + self.NAME + "' \n"
-        output += "   \\__ SPREADSHEET_ID: " + self.SPREADSHEET_ID + "\n"
+        output += "   \\__ SPREADSHEET_ID: '{0}'\n".format(self.SPREADSHEET_ID)
         output += "   \\__ RANGE: {}\n".format(self.RANGE)
         output += "   \\__ Output Values Collection Name: {0}\n".format(self.ValuesCollectionName)
         return output

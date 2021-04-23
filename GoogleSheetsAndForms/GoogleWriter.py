@@ -24,7 +24,7 @@ class GoogleWriter:
 
     def __str__(self):
         output = "GoogleWriter: '" + self.NAME + "' \n"
-        output += "   \\__ SPREADSHEET_ID: " + self.SPREADSHEET_ID + "\n"
+        output += "   \\__ SPREADSHEET_ID: '" + self.SPREADSHEET_ID + "'\n"
         output += "   \\__ RANGE: " + self.RANGE + "\n"
         output += "   \\__ Labels: {}\n".format(self.OutputLabels)
         output += "   \\__ InputCollection Name: {0}\n".format(self.ValuesCollectionName)
