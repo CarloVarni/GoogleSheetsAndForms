@@ -5,13 +5,45 @@ class DataAdder:
     def __init__(self, NAME):
         self.__NAME = NAME
         
-        self.OutputCollectionName = []
-        self.Data = []
+        self.__OutputCollectionName = []
+        self.__Data = []
         
     @property
     def NAME(self):
         return self.__NAME
 
+    @property
+    def OutputCollectionName(self):
+        return self.__OutputCollectionName
+    
+    @OutputCollectionName.setter
+    def OutputCollectionName(self, value):
+        if not isinstance(value, list):
+            raise Exception(FAIL("Property Error: 'OutputCollectionName' property of class 'DataAdder' must be an array of strings!"))
+        if len(value) == 0:
+            raise Exception(FAIL("Property Error: 'OutputCollectionName' property of class 'DataAdder' must have at least one entry!"))
+        for el in value:
+            if not isinstance(el, str):
+                raise Exception(FAIL("Property Error: 'OutputCollectionName' property of class 'DataAdder' must be an array of strings!"))
+            if len(el) == 0:
+                raise Exception(FAIL("Property Error: 'OutputCollectionName' property of class 'DataAdder' must not contain blank values!"))
+        self.__OutputCollectionName = value
+
+    @property
+    def Data(self):
+        return self.__Data
+
+    @Data.setter
+    def Data(self, value):
+        if not isinstance(value, list):
+            raise Exception(FAIL("Property Error: 'Data' property of class 'DataAdder' must be an array!"))
+        if len(value) == 0:
+            raise Exception(FAIL("Property Error: 'Data' property of class 'DataAdder' must have at least one entry!"))
+        for el in value:
+            if el is None:
+                raise Exception(FAIL("Property Error: 'Data' property of class 'DataAdder' must not container NONE elements!"))
+        self.__Data = value
+            
     def __str__(self):
         output = "DataAdder: '{0}'\n".format(self.NAME)
         output += "   \\__ Output Collection Name: {}\n".format(self.OutputCollectionName)

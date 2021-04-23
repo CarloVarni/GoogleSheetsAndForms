@@ -5,6 +5,10 @@ class Context:
     def __init__(self):
         self.__CTX = {}
 
+    @property
+    def CONTEXT(self):
+        return self.__CTX
+        
     def retrieve(self, objName):
         if objName is None:
             raise Exception(FAIL("Cannot Retrieve None Object From Context!"))

@@ -44,18 +44,26 @@ class GoogleBot:
     def JSON(self):
         return self.__JSON
 
+    @property
+    def EXECUTABLE(self):
+        return self.__EXECUTABLE
+
+    @property
+    def CONTEXT(self):
+        return self.__CTX
+    
     def addExecutable(self, executable):
         self.__EXECUTABLE.append(executable)
         
     def execute(self):
         print(NOTE("Scheduling sequence for '" + self.NAME + "'"))
-        for el in self.__EXECUTABLE:
+        for el in self.EXECUTABLE:
             print("   \\__ " + el.NAME)
         print()
 
         print(NOTE("Sequence details ..."))
-        for el in self.__EXECUTABLE:
+        for el in self.EXECUTABLE:
             print(el)
         
-        for el in self.__EXECUTABLE:
+        for el in self.EXECUTABLE:
             el.execute(self.__CTX)

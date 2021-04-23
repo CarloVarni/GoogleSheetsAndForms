@@ -36,7 +36,7 @@ class Validator:
             INPUT = self.InputCollections[i]
             REFERENCE = self.ReferenceData[i]
         
-            print("   \\__ Comparing '{0}' with {1} using labels {2}".format(INPUT, REFERENCE, LABEL))
+            print("   \\__ Comparing '{0}' with '{1}' using labels {2}".format(INPUT, REFERENCE, LABEL))
 
             inputCollection = CTX.retrieve(INPUT).requests
             referenceCollection = CTX.retrieve(REFERENCE)

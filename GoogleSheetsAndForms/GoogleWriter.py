@@ -7,8 +7,8 @@ class GoogleWriter:
         self.__SPREADSHEET_ID = SPREADSHEET_ID
         self.__RANGE = RANGE
 
-        self.ValuesCollectionName = ""
-        self.OutputLabels = []
+        self.__ValuesCollectionName = ""
+        self.__OutputLabels = []
         
     @property
     def NAME(self):
@@ -22,6 +22,35 @@ class GoogleWriter:
     def RANGE(self):
         return self.__RANGE
 
+    @property
+    def ValuesCollectionName(self):
+        return self.__ValuesCollectionName
+
+    @ValuesCollectionName.setter
+    def ValuesCollectionName(self, value):
+        if not isinstance(value, str):
+            raise Exception(FAIL("Property Error : 'ValuesCollectionName' property of class 'GoogleWriter' must be a string!"))
+        if len(value) == 0:
+            raise Exception(FAIL("Property Error : 'ValuesCollectionName' property of class 'GoogleWriter' must not be blank!"))
+        self.__ValuesCollectionName = value
+
+    @property
+    def OutputLabels(self):
+        return self.__OutputLabels
+
+    @OutputLabels.setter
+    def OutputLabels(self, value):
+        if not isinstance(value, list):
+            raise Exception(FAIL("Property Error : 'OutputLabels' property of class 'GoogleWriter' must be a list of strings!"))
+        if len(value) == 0:
+            raise Exception(FAIL("Property Error : 'OutputLabels' property of class 'GoogleWriter' must contain at least one entry!"))
+        for el in value:
+            if not isinstance(el, str):
+                raise Exception(FAIL("Property Error : 'OutputLabels' property of class 'GoogleWriter' must be a list of strings!"))
+            if len(el) == 0:
+                raise Exception(FAIL("Property Error : 'OutputLabels' property of class 'GoogleWriter' must not contain blank entries!"))
+        self.__OutputLabels = value
+    
     def __str__(self):
         output = "GoogleWriter: '" + self.NAME + "' \n"
         output += "   \\__ SPREADSHEET_ID: '" + self.SPREADSHEET_ID + "'\n"

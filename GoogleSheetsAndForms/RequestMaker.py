@@ -8,12 +8,12 @@ class RequestMaker:
                  printFunction=None):
         self.__NAME = NAME
 
-        self.ValuesCollectionName = ""
-        self.RequestCollectionName = ""
+        self.__ValuesCollectionName = ""
+        self.__RequestCollectionName = ""
 
         # This is case dependent
-        self.InputFormat = []
-        self.InputLabels = []
+        self.__InputFormat = []
+        self.__InputLabels = []
 
         self.__validateFunction = validateFunction
         self.__printFunction = printFunction
@@ -29,7 +29,55 @@ class RequestMaker:
     @property
     def NAME(self):
         return self.__NAME
-    
+
+    @property
+    def ValuesCollectionName(self):
+        return self.__ValuesCollectionName
+
+    @ValuesCollectionName.setter
+    def ValuesCollectionName(self, value):
+        if not isinstance(value, str):
+            raise Exception(FAIL("Property Error : 'ValuesCollectionName' property of class 'RequestMaker' must be a string!"))
+        if len(value) == 0:
+            raise Exception(FAIL("Property Error : 'ValuesCollectionName' property of class 'RequestMaker' must not be blank!"))
+        self.__ValuesCollectionName = value
+
+    @property
+    def RequestCollectionName(self):
+        return self.__RequestCollectionName
+
+    @RequestCollectionName.setter
+    def RequestCollectionName(self, value):
+        if not isinstance(value, str):
+            raise Exception(FAIL("Property Error : 'RequestCollectionName' property of class 'RequestMaker' must be a string!"))
+        if len(value) == 0:
+            raise Exception(FAIL("Property Error : 'RequestCollectionName' property of class 'RequestMaker' must not be blank!"))
+        self.__RequestCollectionName = value
+
+    @property
+    def InputFormat(self):
+        return self.__InputFormat
+
+    @InputFormat.setter
+    def InputFormat(self, value):
+        if not isinstance(value, list):
+            raise Exception(FAIL("Property Error : 'InputFormat' property of class 'RequestMaker' must be a list of types!"))
+        if len(value) == 0:
+            raise Exception(FAIL("Property Error : 'InputFormat' property of class 'RequestMaker' must have at least one entry!"))
+        self.__InputFormat = value
+
+    @property
+    def InputLabels(self):
+        return self.__InputLabels
+
+    @InputLabels.setter
+    def InputLabels(self, value):
+        if not isinstance(value, list):
+            raise Exception(FAIL("Property Error : 'InputLabels' property of class 'RequestMaker' must be a list!"))
+        if len(value) == 0:
+            raise Exception(FAIL("Property Error : 'InputLabels' property of class 'RequestMaker' must have at least one entry!"))
+        self.__InputLabels = value
+        
     def execute(self, CTX):
 
         if self.ValuesCollectionName == "":

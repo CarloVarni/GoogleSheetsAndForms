@@ -7,7 +7,7 @@ class GoogleReader:
         self.__SPREADSHEET_ID = SPREADSHEET_ID
         self.__RANGE = RANGE
 
-        self.ValuesCollectionName = [""]
+        self.__ValuesCollectionName = [""]
         
     @property
     def NAME(self):
@@ -21,6 +21,24 @@ class GoogleReader:
     def RANGE(self):
         return self.__RANGE
 
+    @property
+    def ValuesCollectionName(self):
+        return self.__ValuesCollectionName
+
+    @ValuesCollectionName.setter
+    def ValuesCollectionName(self, value):
+        if not isinstance(value, list):
+            raise Exception(FAIL("Property Error : 'ValuesCollectionName' property of class 'GoogleReader' must be a list of strings!"))
+        if len(value) == 0:
+            raise Exception(FAIL("Property Error : 'ValuesCollectionName' property of class 'GoogleReader' must contain at least one entry!"))
+        for el in value:
+            if not isinstance(el, str):
+                raise Exception(FAIL("Property Error : 'ValuesCollectionName' property of class 'GoogleReader' must be a list of strings!"))
+            if len(el) == 0:
+                raise Exception(FAIL("Property Error : 'ValuesCollectionName' property of class 'GoogleReader' must not contain blank entries!"))
+
+        self.__ValuesCollectionName = value
+    
     def __str__(self):
         output = "GoogleReader: '" + self.NAME + "' \n"
         output += "   \\__ SPREADSHEET_ID: '{0}'\n".format(self.SPREADSHEET_ID)

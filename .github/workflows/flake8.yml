@@ -2,9 +2,6 @@ name: Run Flake8 Against Repository
 
 on:
   push:
-  schedule:
-    - cron: "0 12 * * *" # Runs at 12 UTC (i.e. 2 p.m. CET/CEST - 5 a.m. PST) every day
-  workflow_dispatch:
 
 jobs:
   flake8-lint:

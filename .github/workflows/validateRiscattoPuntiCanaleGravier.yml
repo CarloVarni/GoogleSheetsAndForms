@@ -1,16 +1,14 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Sync Google Sheet and compile Forms
+name: Validate Riscatto Punti Canale Gravier
 
 # Controls when the action will run. 
 on:
-  schedule:
-    - cron: "0 12 * * *" # Runs at 12 UTC (i.e. 2 p.m. CET/CEST - 5 a.m. PST) every day
-  workflow_dispatch:
+  push:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  riscatto-punti-canale-gravier:
+  validate-riscatto-punti-canale-gravier:
     runs-on: macos-latest
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -40,5 +38,5 @@ jobs:
           
       - name: execute py script
         run: |
-            python3 RiscattoPuntiCanaleGravier.py --json ./data/riscattoPuntiCanale.json --official
+            python3 RiscattoPuntiCanaleGravier.py --json ./data/riscattoPuntiCanale.json
         

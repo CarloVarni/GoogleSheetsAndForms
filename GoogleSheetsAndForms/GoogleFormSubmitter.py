@@ -10,11 +10,11 @@ class GoogleFormSubmitter:
                  negativeSubmissionUpdate=None):
         self.__NAME = NAME
         self.__FORMLINK = "https://docs.google.com/forms/d/e/" + FORMLINK + "/viewform"
-        self.InputLabels = []
-        self.FormIds = []
+        self.__InputLabels = []
+        self.__FormIds = []
 
-        self.RequestCollectionName = ""
-        self.UpdatedRequestCollectionName = ""
+        self.__RequestCollectionName = ""
+        self.__UpdatedRequestCollectionName = ""
         
         self.__selectionFunction = selectionFunction
         self.__positiveSubmissionUpdate = positiveSubmissionUpdate
@@ -28,6 +28,64 @@ class GoogleFormSubmitter:
     def FORMLINK(self):
         return self.__FORMLINK
 
+    @property
+    def RequestCollectionName(self):
+        return self.__RequestCollectionName
+
+    @RequestCollectionName.setter
+    def RequestCollectionName(self, value):
+        if not isinstance(value, str):
+            raise Exception(FAIL("Property Error : 'RequestCollectionName' property of class 'GoogleFormSubmitter' must be a string!"))
+        if len(value) == 0:
+            raise Exception(FAIL("Property Error : 'RequestCollectionName' property of class 'GoogleFormSubmitter' must not be blank!"))
+        self.__RequestCollectionName = value
+
+    @property
+    def UpdatedRequestCollectionName(self):
+        return self.__UpdatedRequestCollectionName
+
+    @UpdatedRequestCollectionName.setter
+    def UpdatedRequestCollectionName(self, value):
+        if not isinstance(value, str):
+            raise Exception(FAIL("Property Error : 'UpdatedRequestCollectionName' property of class 'GoogleFormSubmitter' must be a string!"))
+        if len(value) == 0:
+            raise Exception(FAIL("Property Error : 'UpdatedRequestCollectionName' property of class 'GoogleFormSubmitter' must not be blank!"))
+        self.__UpdatedRequestCollectionName = value
+
+    @property
+    def InputLabels(self):
+        return self.__InputLabels
+
+    @InputLabels.setter
+    def InputLabels(self, value):
+        if not isinstance(value, list):
+            raise Exception(FAIL("Property Error : 'InputLabels' property of class 'GoogleFormSubmitter' must be an array of strings!"))
+        if len(value) == 0:
+            raise Exception(FAIL("Property Error : 'InputLabels' property of class 'GoogleFormSubmitter' must contain at least one element!"))
+        for el in value:
+            if not isinstance(el, str) and el is not None:
+                raise Exception(FAIL("Property Error : 'InputLabels' property of class 'GoogleFormSubmitter' must be an array of strings!"))
+            if el is not None and len(el) == 0:
+                raise Exception(FAIL("Property Error : 'InputLabels' property of class 'GoogleFormSubmitter' must not contain blank elements!"))
+        self.__InputLabels = value
+
+    @property
+    def FormIds(self):
+        return self.__FormIds
+    
+    @FormIds.setter
+    def FormIds(self, value):
+        if not isinstance(value, list):
+            raise Exception(FAIL("Property Error : 'FormIds' property of class 'GoogleFormSubmitter' must be an array of strings!"))
+        if len(value) == 0:
+            raise Exception(FAIL("Property Error : 'FormIds' property of class 'GoogleFormSubmitter' must contain at least one element!"))
+        for el in value:
+            if not isinstance(el, str) and el is not None:
+                raise Exception(FAIL("Property Error : 'FormIds' property of class 'GoogleFormSubmitter' must be an array of strings!"))
+            if el is not None and len(el) == 0:
+                raise Exception(FAIL("Property Error : 'FormIds' property of class 'GoogleFormSubmitter' must not contain blank elements!"))
+        self.__FormIds = value
+            
     def __str__(self):
         output = "GoogleFormSubmitter: '{0}' \n".format(self.NAME)
         output += "   \\__ Form link: " + self.FORMLINK + "\n" 
