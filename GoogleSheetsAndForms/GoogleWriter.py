@@ -9,7 +9,7 @@ class GoogleWriter:
         self.__RANGE: str = RANGE
 
         self.__ValuesCollectionName: str = ""
-        self.__OutputLabels: list[str]  = []
+        self.__OutputLabels: list[str] = []
         
     @property
     def NAME(self) -> str:
