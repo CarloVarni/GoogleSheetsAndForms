@@ -8,11 +8,11 @@ from GoogleSheetsAndForms.Messages import FAIL, NOTE
 
 class GoogleBot:
     def __init__(self, name: str, JSON: str):
-        self.__NAME = name
-        self.__SCOPES: list = ["https://www.googleapis.com/auth/spreadsheets"] 
+        self.__NAME: str = name
+        self.__SCOPES: list[str] = ["https://www.googleapis.com/auth/spreadsheets"] 
         self.__JSON: str = JSON
         self.__EXECUTABLE: list = []
-        self.__CTX = Context()
+        self.__CTX: Context = Context()
         
         # add credentials to the account
         creds = None
@@ -33,23 +33,23 @@ class GoogleBot:
         return output
         
     @property
-    def NAME(self):
+    def NAME(self) -> str:
         return self.__NAME
     
     @property
-    def SCOPES(self):
+    def SCOPES(self) -> list:
         return self.__SCOPES
 
     @property
-    def JSON(self):
+    def JSON(self) -> str:
         return self.__JSON
 
     @property
-    def EXECUTABLE(self):
+    def EXECUTABLE(self) -> list:
         return self.__EXECUTABLE
 
     @property
-    def CONTEXT(self):
+    def CONTEXT(self) -> Context:
         return self.__CTX
     
     def addExecutable(self, executable):

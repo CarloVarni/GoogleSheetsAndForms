@@ -1,19 +1,20 @@
 
 from GoogleSheetsAndForms.Request import Request
 from GoogleSheetsAndForms.Messages import FAIL
+from GoogleSheetsAndForms.Context import Context
 
 class RequestMaker:
-    def __init__(self, NAME,
+    def __init__(self, NAME: str,
                  validateFunction=None,
                  printFunction=None):
-        self.__NAME = NAME
+        self.__NAME: str = NAME
 
-        self.__ValuesCollectionName = ""
-        self.__RequestCollectionName = ""
+        self.__ValuesCollectionName: str = ""
+        self.__RequestCollectionName: str = ""
 
         # This is case dependent
-        self.__InputFormat = []
-        self.__InputLabels = []
+        self.__InputFormat: list = []
+        self.__InputLabels: list = []
 
         self.__validateFunction = validateFunction
         self.__printFunction = printFunction
@@ -27,15 +28,15 @@ class RequestMaker:
         return output
 
     @property
-    def NAME(self):
+    def NAME(self) -> str:
         return self.__NAME
 
     @property
-    def ValuesCollectionName(self):
+    def ValuesCollectionName(self) -> str:
         return self.__ValuesCollectionName
 
     @ValuesCollectionName.setter
-    def ValuesCollectionName(self, value):
+    def ValuesCollectionName(self, value: str):
         if not isinstance(value, str):
             raise Exception(FAIL("Property Error : 'ValuesCollectionName' property of class 'RequestMaker' must be a string!"))
         if len(value) == 0:
@@ -43,11 +44,11 @@ class RequestMaker:
         self.__ValuesCollectionName = value
 
     @property
-    def RequestCollectionName(self):
+    def RequestCollectionName(self) -> str:
         return self.__RequestCollectionName
 
     @RequestCollectionName.setter
-    def RequestCollectionName(self, value):
+    def RequestCollectionName(self, value: str):
         if not isinstance(value, str):
             raise Exception(FAIL("Property Error : 'RequestCollectionName' property of class 'RequestMaker' must be a string!"))
         if len(value) == 0:
@@ -55,11 +56,11 @@ class RequestMaker:
         self.__RequestCollectionName = value
 
     @property
-    def InputFormat(self):
+    def InputFormat(self) -> list:
         return self.__InputFormat
 
     @InputFormat.setter
-    def InputFormat(self, value):
+    def InputFormat(self, value: list):
         if not isinstance(value, list):
             raise Exception(FAIL("Property Error : 'InputFormat' property of class 'RequestMaker' must be a list of types!"))
         if len(value) == 0:
@@ -67,19 +68,21 @@ class RequestMaker:
         self.__InputFormat = value
 
     @property
-    def InputLabels(self):
+    def InputLabels(self) -> list:
         return self.__InputLabels
 
     @InputLabels.setter
-    def InputLabels(self, value):
+    def InputLabels(self, value: list):
         if not isinstance(value, list):
             raise Exception(FAIL("Property Error : 'InputLabels' property of class 'RequestMaker' must be a list!"))
         if len(value) == 0:
             raise Exception(FAIL("Property Error : 'InputLabels' property of class 'RequestMaker' must have at least one entry!"))
         self.__InputLabels = value
         
-    def execute(self, CTX):
-
+    def execute(self, CTX: Context):
+        if not isinstance(CTX, Context):
+            raise Exception(FAIL("Execute method accept Context objects as input!"))
+        
         if self.ValuesCollectionName == "":
             raise Exception(FAIL("Property 'ValuesCollectionName' is blank for '{0}'!".format(self.NAME)))
         if self.RequestCollectionName == "":

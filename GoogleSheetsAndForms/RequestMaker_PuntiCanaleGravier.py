@@ -4,16 +4,16 @@ from GoogleSheetsAndForms.Messages import OK, WARNING, FAIL
 import re
 
 class RequestMaker_PuntiCanaleGravier(RequestMaker):
-    def __init__(self, NAME):
+    def __init__(self, NAME: str):
         super().__init__(NAME,
                          validateFunction=self.defaultValidateFunction,
                          printFunction=self.defaultPrintFormat)
 
         # This is case dependent
-        self.InputFormat = [str, str, str, None, None, None, None, str]
-        self.InputLabels = ['AccountTwitch', 'DataRiscatto', 'Richiesta', None, None, None, None, 'Inserita']
+        self.InputFormat: list = [str, str, str, None, None, None, None, str]
+        self.InputLabels: list = ['AccountTwitch', 'DataRiscatto', 'Richiesta', None, None, None, None, 'Inserita']
         
-    def defaultPrintFormat(self, listReqs):
+    def defaultPrintFormat(self, listReqs: list) -> str:
         size = [0, 0, 0]  # Y/OTHER/N
         
         listRequets = ""        
@@ -39,7 +39,7 @@ class RequestMaker_PuntiCanaleGravier(RequestMaker):
         output += listRequets
         return output
     
-    def defaultValidateFunction(self, req):
+    def defaultValidateFunction(self, req: dict):
         account = req['AccountTwitch']
         data = req['DataRiscatto']
         richiesta = req['Richiesta']

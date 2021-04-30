@@ -1,23 +1,24 @@
 
 from GoogleSheetsAndForms.Messages import NOTE, FAIL
+from GoogleSheetsAndForms.Context import Context
 
 class DataAdder:
-    def __init__(self, NAME):
-        self.__NAME = NAME
+    def __init__(self, NAME: str):
+        self.__NAME: str = NAME
         
-        self.__OutputCollectionName = []
-        self.__Data = []
+        self.__OutputCollectionName: list[str] = []
+        self.__Data: list = []
         
     @property
-    def NAME(self):
+    def NAME(self) -> str:
         return self.__NAME
 
     @property
-    def OutputCollectionName(self):
+    def OutputCollectionName(self) -> str:
         return self.__OutputCollectionName
     
     @OutputCollectionName.setter
-    def OutputCollectionName(self, value):
+    def OutputCollectionName(self, value: list):
         if not isinstance(value, list):
             raise Exception(FAIL("Property Error: 'OutputCollectionName' property of class 'DataAdder' must be an array of strings!"))
         if len(value) == 0:
@@ -34,7 +35,7 @@ class DataAdder:
         return self.__Data
 
     @Data.setter
-    def Data(self, value):
+    def Data(self, value: list):
         if not isinstance(value, list):
             raise Exception(FAIL("Property Error: 'Data' property of class 'DataAdder' must be an array!"))
         if len(value) == 0:
@@ -49,7 +50,9 @@ class DataAdder:
         output += "   \\__ Output Collection Name: {}\n".format(self.OutputCollectionName)
         return output
 
-    def execute(self, CTX):
+    def execute(self, CTX: Context):
+        if not isinstance(CTX, Context):
+            raise Exception(FAIL("Execute method accept Context objects as input!"))
         if len(self.OutputCollectionName) == 0:
             raise Exception(FAIL("No Data has been specified to be added to the Context!"))
         if len(self.OutputCollectionName) != len(self.Data):

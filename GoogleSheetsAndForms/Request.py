@@ -2,30 +2,30 @@
 from GoogleSheetsAndForms.Messages import NOTE, FAIL
 
 class Request:
-    def __init__(self, name, labels, validator=None, printFormat=None):
-        self.__name = name
-        self.__labels = labels
-        self.__requests = []
+    def __init__(self, name: str, labels: list, validator=None, printFormat=None):
+        self.__name: str = name
+        self.__labels: list[str] = labels
+        self.__requests: list = []
 
         self.__validator = validator
         self.__printFormat = printFormat
 
-        self.__size = 0
+        self.__size: int = 0
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self.__name
 
     @property
-    def requests(self):
+    def requests(self) -> list:
         return self.__requests
 
     @property
-    def labels(self):
+    def labels(self) -> list:
         return self.__labels
 
     @property
-    def size(self):
+    def size(self) -> int:
         return self.__size
     
     def __str__(self):
@@ -42,7 +42,7 @@ class Request:
 
         return output
 
-    def validateRequest(self, req):
+    def validateRequest(self, req: list):
         if len(req) != len(self.labels):
             raise Exception(FAIL("{0}: Labels do not match with requests due to different sizes: {1} vs {2}!".format(self.name, len(req), len(self.labels))))
 
@@ -50,7 +50,7 @@ class Request:
             if not isinstance(el, str):
                 raise Exception(FAIL("{0}: Invalid input for entry in Google Sheet due to non-str input!".format(self.name)))
         
-    def addRequest(self, el):
+    def addRequest(self, el: list):
         # Base Validation
         self.validateRequest(el)
          
@@ -65,7 +65,7 @@ class Request:
         self.__requests.append(toAdd)
         self.__size += 1
         
-    def processInput(self, results):
+    def processInput(self, results: list):
         for el in results:
             self.addRequest(el)
 
