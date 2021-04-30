@@ -1,32 +1,33 @@
 
 from GoogleSheetsAndForms.Messages import NOTE, FAIL
+from GoogleSheetsAndForms.Context import Context
 
 class GoogleReader:
-    def __init__(self, NAME, SPREADSHEET_ID, RANGE):
-        self.__NAME = NAME
-        self.__SPREADSHEET_ID = SPREADSHEET_ID
-        self.__RANGE = RANGE
+    def __init__(self, NAME: str, SPREADSHEET_ID: str, RANGE: list):
+        self.__NAME: str = NAME
+        self.__SPREADSHEET_ID: str = SPREADSHEET_ID
+        self.__RANGE: list[str] = RANGE
 
-        self.__ValuesCollectionName = [""]
+        self.__ValuesCollectionName: list[str] = [""]
         
     @property
-    def NAME(self):
+    def NAME(self) -> str:
         return self.__NAME
 
     @property
-    def SPREADSHEET_ID(self):
+    def SPREADSHEET_ID(self) -> str:
         return self.__SPREADSHEET_ID
 
     @property
-    def RANGE(self):
+    def RANGE(self) -> list:
         return self.__RANGE
 
     @property
-    def ValuesCollectionName(self):
+    def ValuesCollectionName(self) -> list:
         return self.__ValuesCollectionName
 
     @ValuesCollectionName.setter
-    def ValuesCollectionName(self, value):
+    def ValuesCollectionName(self, value: list):
         if not isinstance(value, list):
             raise Exception(FAIL("Property Error : 'ValuesCollectionName' property of class 'GoogleReader' must be a list of strings!"))
         if len(value) == 0:
@@ -46,10 +47,12 @@ class GoogleReader:
         output += "   \\__ Output Values Collection Name: {0}\n".format(self.ValuesCollectionName)
         return output
     
-    def execute(self, CTX):
+    def execute(self, CTX: Context):
+        if not isinstance(CTX, Context):
+            raise Exception(FAIL("Execute method accept Context objects as input!"))
+
         if len(self.ValuesCollectionName) == 0:
             raise Exception(FAIL("Property 'ValuesCollectionName' is blank for '{0}'!".format(self.NAME)))
-
         if len(self.ValuesCollectionName) != len(self.__RANGE):
             raise Exception(FAIL("Different number of RANGES and Collection Names for '{0}'".format(self.NAME)))
 

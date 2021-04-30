@@ -1,39 +1,40 @@
 
 from GoogleSheetsAndForms.Messages import FAIL, NOTE, OK
+from GoogleSheetsAndForms.Context import Context
 import requests
 import time
 
 class GoogleFormSubmitter:
-    def __init__(self, NAME, FORMLINK,
+    def __init__(self, NAME: str, FORMLINK: str,
                  selectionFunction=None,
                  positiveSubmissionUpdate=None,
                  negativeSubmissionUpdate=None):
-        self.__NAME = NAME
-        self.__FORMLINK = "https://docs.google.com/forms/d/e/" + FORMLINK + "/viewform"
-        self.__InputLabels = []
-        self.__FormIds = []
+        self.__NAME: str = NAME
+        self.__FORMLINK: str = "https://docs.google.com/forms/d/e/" + FORMLINK + "/viewform"
+        self.__InputLabels: list = []
+        self.__FormIds: list = []
 
-        self.__RequestCollectionName = ""
-        self.__UpdatedRequestCollectionName = ""
+        self.__RequestCollectionName: str = ""
+        self.__UpdatedRequestCollectionName: str = ""
         
         self.__selectionFunction = selectionFunction
         self.__positiveSubmissionUpdate = positiveSubmissionUpdate
         self.__negativeSubmissionUpdate = negativeSubmissionUpdate
         
     @property
-    def NAME(self):
+    def NAME(self) -> str:
         return self.__NAME
 
     @property
-    def FORMLINK(self):
+    def FORMLINK(self) -> str:
         return self.__FORMLINK
 
     @property
-    def RequestCollectionName(self):
+    def RequestCollectionName(self) -> str:
         return self.__RequestCollectionName
 
     @RequestCollectionName.setter
-    def RequestCollectionName(self, value):
+    def RequestCollectionName(self, value: str):
         if not isinstance(value, str):
             raise Exception(FAIL("Property Error : 'RequestCollectionName' property of class 'GoogleFormSubmitter' must be a string!"))
         if len(value) == 0:
@@ -41,11 +42,11 @@ class GoogleFormSubmitter:
         self.__RequestCollectionName = value
 
     @property
-    def UpdatedRequestCollectionName(self):
+    def UpdatedRequestCollectionName(self) -> str:
         return self.__UpdatedRequestCollectionName
 
     @UpdatedRequestCollectionName.setter
-    def UpdatedRequestCollectionName(self, value):
+    def UpdatedRequestCollectionName(self, value: str):
         if not isinstance(value, str):
             raise Exception(FAIL("Property Error : 'UpdatedRequestCollectionName' property of class 'GoogleFormSubmitter' must be a string!"))
         if len(value) == 0:
@@ -53,11 +54,11 @@ class GoogleFormSubmitter:
         self.__UpdatedRequestCollectionName = value
 
     @property
-    def InputLabels(self):
+    def InputLabels(self) -> list:
         return self.__InputLabels
 
     @InputLabels.setter
-    def InputLabels(self, value):
+    def InputLabels(self, value: list):
         if not isinstance(value, list):
             raise Exception(FAIL("Property Error : 'InputLabels' property of class 'GoogleFormSubmitter' must be an array of strings!"))
         if len(value) == 0:
@@ -70,11 +71,11 @@ class GoogleFormSubmitter:
         self.__InputLabels = value
 
     @property
-    def FormIds(self):
+    def FormIds(self) -> list:
         return self.__FormIds
     
     @FormIds.setter
-    def FormIds(self, value):
+    def FormIds(self, value: list):
         if not isinstance(value, list):
             raise Exception(FAIL("Property Error : 'FormIds' property of class 'GoogleFormSubmitter' must be an array of strings!"))
         if len(value) == 0:
@@ -95,7 +96,9 @@ class GoogleFormSubmitter:
         output += "   \\__ Output Collection Name: '{0}'\n".format(self.UpdatedRequestCollectionName)
         return output
     
-    def execute(self, CTX):
+    def execute(self, CTX: Context):
+        if not isinstance(CTX, Context):
+            raise Exception(FAIL("Execute method accept Context objects as input!"))
         if len(self.RequestCollectionName) == 0:
             raise Exception(FAIL("Property 'RequestCollectionName' is blank for '{0}'!".format(self.NAME)))
         
