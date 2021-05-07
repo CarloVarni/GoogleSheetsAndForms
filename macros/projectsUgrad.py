@@ -166,6 +166,14 @@ class CompareUgradProjects:
             diffs = newProj.diffFields(refProj)
             differences[key] = [newProj, diffs]
 
+        print("   \\__ Checking removed project ...")
+        for key in ref_data:
+            oldProj = ref_data[key]
+            if new_data.get(key, None) is not None:
+                continue
+
+            differences[key] = [oldProj, ["removed"]]
+
         print()
         return differences
 
