@@ -1,5 +1,5 @@
 
-from GoogleSheetsAndForms.Messages import FAIL
+from GoogleSheetsAndForms.Core.Messages import FAIL
 
 class Context:
     def __init__(self):

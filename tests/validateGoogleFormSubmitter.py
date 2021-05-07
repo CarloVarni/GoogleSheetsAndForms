@@ -16,11 +16,11 @@ def retrieveAllVODS():
 
 if __name__ == '__main__':
 
-    from GoogleSheetsAndForms.GoogleBot import GoogleBot
-    from GoogleSheetsAndForms.DataAdder import DataAdder
+    from GoogleSheetsAndForms.Core.GoogleBot import GoogleBot
+    from GoogleSheetsAndForms.Core.DataAdder import DataAdder
     from GoogleSheetsAndForms.Request import Request
-    from GoogleSheetsAndForms.GoogleFormSubmitter import GoogleFormSubmitter
-    from GoogleSheetsAndForms.Messages import FAIL
+    from GoogleSheetsAndForms.Core.GoogleFormSubmitter import GoogleFormSubmitter
+    from GoogleSheetsAndForms.Core.Messages import FAIL
     import argparse
 
     parser = argparse.ArgumentParser()

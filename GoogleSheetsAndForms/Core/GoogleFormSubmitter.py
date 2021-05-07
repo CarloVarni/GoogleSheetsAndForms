@@ -1,6 +1,6 @@
 
-from GoogleSheetsAndForms.Messages import FAIL, NOTE, OK
-from GoogleSheetsAndForms.Context import Context
+from GoogleSheetsAndForms.Core.Messages import FAIL, NOTE, OK
+from GoogleSheetsAndForms.Core.Context import Context
 import requests
 import time
 

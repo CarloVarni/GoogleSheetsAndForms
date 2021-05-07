@@ -1,5 +1,5 @@
 
-from GoogleSheetsAndForms.Messages import NOTE, OK, FAIL
+from GoogleSheetsAndForms.Core.Messages import NOTE, OK, FAIL
 
 class Validator:
     def __init__(self, NAME):
@@ -140,8 +140,8 @@ def createRefDictionary(inputs, labels):
 
 if __name__ == '__main__':
 
-    from GoogleSheetsAndForms.GoogleBot import GoogleBot
-    from GoogleSheetsAndForms.DataAdder import DataAdder
+    from GoogleSheetsAndForms.Core.GoogleBot import GoogleBot
+    from GoogleSheetsAndForms.Core.DataAdder import DataAdder
     from GoogleSheetsAndForms.RequestMaker import RequestMaker
     import argparse
 

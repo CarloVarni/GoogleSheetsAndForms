@@ -1,6 +1,6 @@
 
 from GoogleSheetsAndForms.RequestMaker import RequestMaker
-from GoogleSheetsAndForms.Messages import OK, WARNING, FAIL
+from GoogleSheetsAndForms.Core.Messages import OK, WARNING, FAIL
 import re
 
 class RequestMaker_PuntiCanaleGravier(RequestMaker):

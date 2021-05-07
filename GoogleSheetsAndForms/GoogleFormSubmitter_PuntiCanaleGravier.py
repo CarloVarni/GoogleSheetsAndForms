@@ -1,6 +1,6 @@
 
-from GoogleSheetsAndForms.GoogleFormSubmitter import GoogleFormSubmitter
-from GoogleSheetsAndForms.Messages import FAIL
+from GoogleSheetsAndForms.Core.GoogleFormSubmitter import GoogleFormSubmitter
+from GoogleSheetsAndForms.Core.Messages import FAIL
 
 class GoogleFormSubmitter_PuntiCanaleGravier(GoogleFormSubmitter):
     def __init__(self, NAME: str, FORMLINK: str):

@@ -1,5 +1,5 @@
 
-from GoogleSheetsAndForms.Messages import NOTE, OK, FAIL
+from GoogleSheetsAndForms.Core.Messages import NOTE, OK, FAIL
 
 class Validator:
     def __init__(self, NAME):
@@ -154,8 +154,8 @@ def retrieveFewDateInfo():
 
 if __name__ == '__main__':
 
-    from GoogleSheetsAndForms.GoogleBot import GoogleBot
-    from GoogleSheetsAndForms.GoogleReader import GoogleReader
+    from GoogleSheetsAndForms.Core.GoogleBot import GoogleBot
+    from GoogleSheetsAndForms.Core.GoogleSheetsReader import GoogleSheetsReader
     import argparse
 
     parser = argparse.ArgumentParser()
@@ -176,12 +176,12 @@ if __name__ == '__main__':
     SPREADSHEET = "1rVk0Teog5d1lvKmosHle-ZruT185bPKZL2_Z5rGVHgQ"
     RANGES = ["READER!A3:I", "READER!G15:G24", "READER!C28:D39"]
 
-    googleReader = GoogleReader("GoogleReader", SPREADSHEET, RANGES)
+    googleReader = GoogleSheetsReader("GoogleSheetsReader", SPREADSHEET, RANGES)
     googleReader.ValuesCollectionName = ["VODS", "VIEWS", "DATE"]
     googleBot.addExecutable(googleReader)
 
     # Validator
-    validator = Validator("GoogleReaderValidator")
+    validator = Validator("GoogleSheetsReaderValidator")
     validator.InputCollections = googleReader.ValuesCollectionName
     validator.ReferenceData = [retrieveAllVODS, retrieveFewViewCounts, retrieveFewDateInfo]
     googleBot.addExecutable(validator)

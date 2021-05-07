@@ -1,6 +1,6 @@
 
-from GoogleSheetsAndForms.Messages import NOTE, FAIL
-from GoogleSheetsAndForms.Context import Context
+from GoogleSheetsAndForms.Core.Messages import NOTE, FAIL
+from GoogleSheetsAndForms.Core.Context import Context
 
 class GoogleWriter:
     def __init__(self, NAME: str, SPREADSHEET_ID: str, RANGE: str):
@@ -69,7 +69,7 @@ class GoogleWriter:
 
         print(NOTE("Updating Google Sheet " + self.NAME + " ..."))
         
-        service = CTX.retrieve("__SERVICE")
+        service = CTX.retrieve("__SERVICE")["sheets"]
         updatedRequests = CTX.retrieve(self.ValuesCollectionName)
 
         data = []

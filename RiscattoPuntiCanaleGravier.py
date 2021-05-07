@@ -1,12 +1,12 @@
 
 if __name__ == '__main__':
 
-    from GoogleSheetsAndForms.GoogleBot import GoogleBot
-    from GoogleSheetsAndForms.GoogleReader import GoogleReader
+    from GoogleSheetsAndForms.Core.GoogleBot import GoogleBot
+    from GoogleSheetsAndForms.Core.GoogleSheetsReader import GoogleSheetsReader
     from GoogleSheetsAndForms.RequestMaker_PuntiCanaleGravier import RequestMaker_PuntiCanaleGravier
     from GoogleSheetsAndForms.GoogleFormSubmitter_PuntiCanaleGravier import GoogleFormSubmitter_PuntiCanaleGravier
-    from GoogleSheetsAndForms.GoogleWriter import GoogleWriter
-    from GoogleSheetsAndForms.Messages import FAIL, WARNING
+    from GoogleSheetsAndForms.Core.GoogleWriter import GoogleWriter
+    from GoogleSheetsAndForms.Core.Messages import FAIL, WARNING
     import argparse
 
     parser = argparse.ArgumentParser()
@@ -33,11 +33,11 @@ if __name__ == '__main__':
     googleBot = GoogleBot("GoogleBot", jsonFile)
 
     # Read from Google Sheets
-    readerDisegni = GoogleReader("GoogleReader DISEGNI", "16d1gW6F5CFTNRySIWiJbpjKFmgFvkT5PpsJnT0oFZuY", ["DISEGNI!A2:A2", "DISEGNI!A5:H"])
+    readerDisegni = GoogleSheetsReader("GoogleSheetsReader DISEGNI", "16d1gW6F5CFTNRySIWiJbpjKFmgFvkT5PpsJnT0oFZuY", ["DISEGNI!A2:A2", "DISEGNI!A5:H"])
     readerDisegni.ValuesCollectionName = ["DISEGNI_METADATA", "DISEGNI_VALUES"]
     googleBot.addExecutable(readerDisegni)
 
-    readerCanzoni = GoogleReader("GoogleReader CANZONI", "16d1gW6F5CFTNRySIWiJbpjKFmgFvkT5PpsJnT0oFZuY", ["CANZONI!A2:A2", "CANZONI!A5:H"])
+    readerCanzoni = GoogleSheetsReader("GoogleSheetsReader CANZONI", "16d1gW6F5CFTNRySIWiJbpjKFmgFvkT5PpsJnT0oFZuY", ["CANZONI!A2:A2", "CANZONI!A5:H"])
     readerCanzoni.ValuesCollectionName = ["CANZONI_METADATA", "CANZONI_VALUES"]
     googleBot.addExecutable(readerCanzoni)
 

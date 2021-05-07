@@ -1,5 +1,5 @@
 
-from GoogleSheetsAndForms.Messages import NOTE, FAIL
+from GoogleSheetsAndForms.Core.Messages import NOTE, FAIL
 
 class Request:
     def __init__(self, name: str, labels: list, validator=None, printFormat=None):

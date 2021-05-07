@@ -3,29 +3,18 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from googleapiclient.discovery import build
 
-from GoogleSheetsAndForms.Context import Context
-from GoogleSheetsAndForms.Messages import FAIL, NOTE
+from GoogleSheetsAndForms.Core.Context import Context
+from GoogleSheetsAndForms.Core.Messages import FAIL, NOTE
 
 class GoogleBot:
     def __init__(self, name: str, JSON: str):
         self.__NAME: str = name
-        self.__SCOPES: list[str] = ["https://www.googleapis.com/auth/spreadsheets"] 
+        self.__SCOPES: list[str] = ["https://www.googleapis.com/auth/spreadsheets",
+                                    "https://www.googleapis.com/auth/documents"]
         self.__JSON: str = JSON
         self.__EXECUTABLE: list = []
         self.__CTX: Context = Context()
         
-        # add credentials to the account
-        creds = None
-        try:
-            creds = ServiceAccountCredentials.from_json_keyfile_name(self.__JSON, self.__SCOPES)
-        except Exception:
-            raise Exception(FAIL("Error while getting Service Account Credentials ...!"))
-
-        # authorize the clientsheet 
-        gspread.authorize(creds)
-
-        self.__CTX.store("__SERVICE", build('sheets', 'v4', credentials=creds))
-
     def __str__(self):
         output = "Google Bot '{0}'\n".format(self.NAME)
         output += "   \\__ CREDS AT JSON FILE : '{0}'\n".format(self.JSON)
@@ -64,6 +53,28 @@ class GoogleBot:
         print(NOTE("Sequence details ..."))
         for el in self.EXECUTABLE:
             print(el)
-        
+
+        # add credentials to the account
+        creds = None
+        try:
+            creds = ServiceAccountCredentials.from_json_keyfile_name(self.__JSON, self.__SCOPES)
+        except Exception:
+            raise Exception(FAIL("Error while getting Service Account Credentials ...!"))
+
+        # authorize the client
+        gspread.authorize(creds)
+
+        services = {}
+        for scope in self.SCOPES:
+            if "spreadsheets" in scope:
+                services["sheets"] = build('sheets', 'v4', credentials=creds)
+            elif "documents" in scope:
+                services["docs"] = build('docs', 'v1', credentials=creds)
+
+        if len(services) == 0:
+            raise Exception(FAIL("Google bot does not have SCOPES!"))
+        self.__CTX.store("__SERVICE", services)
+
+        # run all the algorithms
         for el in self.EXECUTABLE:
             el.execute(self.__CTX)

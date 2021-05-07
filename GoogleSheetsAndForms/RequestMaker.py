@@ -1,7 +1,7 @@
 
 from GoogleSheetsAndForms.Request import Request
-from GoogleSheetsAndForms.Messages import FAIL
-from GoogleSheetsAndForms.Context import Context
+from GoogleSheetsAndForms.Core.Messages import FAIL
+from GoogleSheetsAndForms.Core.Context import Context
 
 class RequestMaker:
     def __init__(self, NAME: str,

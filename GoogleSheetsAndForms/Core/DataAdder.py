@@ -1,6 +1,6 @@
 
-from GoogleSheetsAndForms.Messages import NOTE, FAIL
-from GoogleSheetsAndForms.Context import Context
+from GoogleSheetsAndForms.Core.Messages import NOTE, FAIL
+from GoogleSheetsAndForms.Core.Context import Context
 
 class DataAdder:
     def __init__(self, NAME: str):
