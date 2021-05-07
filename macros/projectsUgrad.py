@@ -11,6 +11,7 @@ class CompareUgradProjects:
 
         self.__RefFile: str = ""
         self.__ProjectCollectionName: str = ""
+        self.__DiffCollectionName: str = ""
         
     @property
     def NAME(self) -> str:
@@ -46,22 +47,38 @@ class CompareUgradProjects:
 
         self.__ProjectCollectionName = value
 
+    @property
+    def DiffCollectionName(self) -> str:
+        return self.__DiffCollectionName
+
+    @DiffCollectionName.setter
+    def DiffCollectionName(self, value: str):
+        if not isinstance(value, str):
+            raise Exception(FAIL("Property Error : 'DiffCollectionName' property of class 'CompareUgradProjects' must be a string!"))
+        if value == "":
+            raise Exception(FAIL("Property Error : 'DiffCollectionName' property of class 'CompareUgradProjects' must not be blank!"))
+
+        self.__DiffCollectionName = value
+    
     def __str__(self):
         output = "CompareUgradProjects: '{0}'\n".format(self.NAME)
         output += "   \\__ Update Mode: '{0}'\n".format(self.UPDATE)
         output += "   \\__ Reference File: '{0}'\n".format(self.RefFile)
         output += "   \\__ Project Collection: '{0}'\n".format(self.ProjectCollectionName)
+        output += "   \\__ Differences Collection: '{0}'\n".format(self.DiffCollectionName)
         return output
         
     def execute(self, CTX: Context):
         if not isinstance(CTX, Context):
             raise Exception(FAIL("Execute method accept Context objects as input!"))
 
-        if self.__RefFile == "":
+        if self.RefFile == "":
             raise Exception(FAIL("Property 'RefFile' is blank for '{0}'!".format(self.NAME)))
-        if self.__ProjectCollectionName == "":
+        if self.ProjectCollectionName == "":
             raise Exception(FAIL("Property 'ProjectCollectionName' is blank for '{0}'!".format(self.NAME)))
-
+        if self.DiffCollectionName == "":
+            raise Exception(FAIL("Property 'DiffCollectionName' is blank for '{0}'!".format(self.NAME)))
+        
         print(NOTE("Checking projects ..."))
         
         projectCollection = CTX.retrieve(self.ProjectCollectionName)
@@ -78,11 +95,24 @@ class CompareUgradProjects:
         for el in diffs:
             proj = diffs[el]
             print("   \\__ Difference for project '" + el + "' with following reason: {}".format(proj[1]))
-            raise Exception(FAIL("Need to take action! Projects are NOT up to date!"))
         if len(diffs) == 0:
             print("   \\__ {0}".format(OK("All projects are up-to-date!")))
 
         print()
+
+        toSave = []
+        for el in diffs:
+            proj = diffs[el]
+            toAdd = {}
+            toAdd['title'] = proj[0].title
+            toAdd['description'] = proj[0].description
+            toAdd['other'] = proj[0].other
+            toAdd['contact'] = proj[0].contact
+            toAdd['email'] = proj[0].email
+            toAdd['reason'] = proj[1]
+            toSave.append(toAdd)
+        CTX.store(self.DiffCollectionName, toSave)
+
         
     def createDictionary(self, collection: list) -> dict:
         data = {}
@@ -144,6 +174,7 @@ if __name__ == "__main__":
     from GoogleSheetsAndForms.Core.GoogleBot import GoogleBot
     from GoogleSheetsAndForms.Core.GoogleDocsReader import GoogleDocsReader
     from GoogleSheetsAndForms.ProjectUgradMaker import ProjectUgradMaker
+    from GoogleSheetsAndForms.Core.GoogleFormSubmitter import GoogleFormSubmitter
     import argparse
 
     parser = argparse.ArgumentParser()
@@ -184,6 +215,15 @@ if __name__ == "__main__":
     projectComparator = CompareUgradProjects("CompareUgradProjects", update)
     projectComparator.RefFile = refFile
     projectComparator.ProjectCollectionName = projectMaker.ProjectsCollectionName
+    projectComparator.DiffCollectionName = "DIFFS"
     googleBot.addExecutable(projectComparator)
-    
+
+    if not update:
+        formSubmitter = GoogleFormSubmitter("GoogleFormSubmitter", "1avHrLEmP7yK6kWPwa3Z2pHFez30Fu4cczFrKtTm_nPE")
+        formSubmitter.RequestCollectionName = projectComparator.DiffCollectionName
+        formSubmitter.UpdatedRequestCollectionName = "SUBMITTED"
+        formSubmitter.InputLabels = ['title', 'description', 'other', 'contact', 'email', 'reason']
+        formSubmitter.FormIds = ['entry.1923020704', 'entry.1943963817', 'entry.265502880', 'entry.1865927878', 'entry.187158238', 'entry.1940199514']
+        googleBot.addExecutable(formSubmitter)
+
     googleBot.execute()

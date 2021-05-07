@@ -10,7 +10,7 @@ class GoogleFormSubmitter:
                  positiveSubmissionUpdate=None,
                  negativeSubmissionUpdate=None):
         self.__NAME: str = NAME
-        self.__FORMLINK: str = "https://docs.google.com/forms/d/e/" + FORMLINK + "/viewform"
+        self.__FORMLINK: str = "https://docs.google.com/forms/d/" + FORMLINK + "/viewform"
         self.__InputLabels: list = []
         self.__FormIds: list = []
 
@@ -102,7 +102,7 @@ class GoogleFormSubmitter:
         if len(self.RequestCollectionName) == 0:
             raise Exception(FAIL("Property 'RequestCollectionName' is blank for '{0}'!".format(self.NAME)))
         
-        requestList = CTX.retrieve(self.RequestCollectionName).requests
+        requestList = CTX.retrieve(self.RequestCollectionName)
 
         print(NOTE("Compiling Google Form {0} ... ".format(self.NAME)))
         print("   \\__ Compiling Forms for " + self.NAME)
@@ -121,7 +121,7 @@ class GoogleFormSubmitter:
                 if self.FormIds[j] is None:
                     continue
                 d[self.FormIds[j]] = el[self.InputLabels[j]]
-
+            
             x = requests.post(self.FORMLINK.replace("viewform", "formResponse"), data=d)
             if x.status_code == requests.codes.ok:
                 if self.__positiveSubmissionUpdate is None:

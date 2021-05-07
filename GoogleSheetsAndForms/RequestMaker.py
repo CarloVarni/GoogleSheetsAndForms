@@ -108,6 +108,6 @@ class RequestMaker:
                           validator=self.__validateFunction,
                           printFormat=self.__printFunction)
         request.processInput(filteredRequests)
-        CTX.store(self.RequestCollectionName, request)
+        CTX.store(self.RequestCollectionName, request.requests)
 
         print(request)

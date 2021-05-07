@@ -36,7 +36,7 @@ if __name__ == '__main__':
 
 
     # Info
-    FORM = "1FAIpQLSfPIKINX5I-snrFCHZiXfCh-IEtUtfm0D3X37iBk08wdN8FUA"
+    FORM = "e/1FAIpQLSfPIKINX5I-snrFCHZiXfCh-IEtUtfm0D3X37iBk08wdN8FUA"
     IDs = [
         "entry.991192545",
         "entry.579164628",
@@ -69,7 +69,7 @@ if __name__ == '__main__':
     # Module
     dataAdder = DataAdder("DataAdder")
     dataAdder.OutputCollectionName = ["VALUES"]
-    dataAdder.Data = [request]
+    dataAdder.Data = [request.requests]
     googleBot.addExecutable(dataAdder)
     
     formSumbitter = GoogleFormSubmitter("GoogleFormSubmitter", FORM)

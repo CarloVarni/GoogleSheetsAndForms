@@ -57,18 +57,18 @@ if __name__ == '__main__':
 
     
     # These are for Testing purposes
-    formDisegni = '1FAIpQLSdIh7YJVqFpbs-X0AWkAukWRbKn4z-zYlLBPt1EbApVGdShig'
+    formDisegni = 'e/1FAIpQLSdIh7YJVqFpbs-X0AWkAukWRbKn4z-zYlLBPt1EbApVGdShig'
     idDisegni = ['entry.1911042707', None, 'entry.1222566434', None, None, None, None, None]
 
-    formCanzoni = '1FAIpQLSdIh7YJVqFpbs-X0AWkAukWRbKn4z-zYlLBPt1EbApVGdShig'
+    formCanzoni = 'e/1FAIpQLSdIh7YJVqFpbs-X0AWkAukWRbKn4z-zYlLBPt1EbApVGdShig'
     idCanzoni = ['entry.1911042707', None, 'entry.1222566434', None, None, None, None, None]
 
     # Thiese are for official Submissions
     if officialRequest:
-        formDisegni = '1FAIpQLSdlIk9ip-Je0rsr2qOscOh4q3yyue7Iqv1YbmUdi3WfrGbMVQ'
+        formDisegni = 'e/1FAIpQLSdlIk9ip-Je0rsr2qOscOh4q3yyue7Iqv1YbmUdi3WfrGbMVQ'
         idDisegni = ['entry.1943497073', None, 'entry.1374345851', None, None, None, None, None]
         
-        formCanzoni = '1FAIpQLSdxHcWVK5CHr6YKuGXmEKXQv_s_oeKdF6GEkrViibhT1C-Kxg'
+        formCanzoni = 'e/1FAIpQLSdxHcWVK5CHr6YKuGXmEKXQv_s_oeKdF6GEkrViibhT1C-Kxg'
         idCanzoni = ['entry.1400530917', None, 'entry.1530943645', None, None, None, None, None]
 
     # Submit entries to Google Forms       

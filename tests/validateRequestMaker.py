@@ -38,7 +38,7 @@ class Validator:
         
             print("   \\__ Comparing '{0}' with '{1}' using labels {2}".format(INPUT, REFERENCE, LABEL))
 
-            inputCollection = CTX.retrieve(INPUT).requests
+            inputCollection = CTX.retrieve(INPUT)
             referenceCollection = CTX.retrieve(REFERENCE)
             try:
                 self.validateRequests(LABEL, inputCollection, referenceCollection)
