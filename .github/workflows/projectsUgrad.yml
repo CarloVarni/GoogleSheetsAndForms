@@ -43,5 +43,5 @@ jobs:
         run: |
           export workingDir=(`pwd`)
           export PYTHONPATH="${PYTHONPATH}:${workingDir}"
-          python3 ./macros/progettiUgrads.py --json ./data/riscattoPuntiCanale.json --ref ./data/projectsUgrad.json
+          python3 ./macros/projectsUgrad.py --json ./data/riscattoPuntiCanale.json --ref ./data/projectsUgrad.json
 
