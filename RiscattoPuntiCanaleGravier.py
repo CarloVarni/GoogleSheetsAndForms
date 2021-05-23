@@ -67,9 +67,10 @@ if __name__ == '__main__':
     if officialRequest:
         formDisegni = 'e/1FAIpQLSdlIk9ip-Je0rsr2qOscOh4q3yyue7Iqv1YbmUdi3WfrGbMVQ'
         idDisegni = ['entry.1943497073', None, 'entry.1374345851', None, None, None, None, None]
-        
-        formCanzoni = 'e/1FAIpQLSdxHcWVK5CHr6YKuGXmEKXQv_s_oeKdF6GEkrViibhT1C-Kxg'
+
+        formCanzoni = 'e/1FAIpQLSc-554i0iljruq3uHqDbIoM4In-2w2iAe9KJ4BvfDCThtuNtQ'
         idCanzoni = ['entry.1400530917', None, 'entry.1530943645', None, None, None, None, None]
+
 
     # Submit entries to Google Forms       
     formSubmitterDisegni = GoogleFormSubmitter_PuntiCanaleGravier("GoogleFormSubmitter DISEGNI", formDisegni)
